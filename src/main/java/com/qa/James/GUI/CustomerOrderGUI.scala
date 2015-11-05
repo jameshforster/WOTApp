@@ -1,11 +1,18 @@
 package com.qa.James.GUI
 
+import scalafx.Includes._
 import scalafx.scene.layout.BorderPane
 import com.qa.James.entities.CustomerOrder
 import com.qa.James.DummyData
 import scalafx.collections.ObservableBuffer
 import scalafx.scene.control.TableColumn._
 import scalafx.scene.control.{TableCell, TableColumn, TableView}
+import scalafx.scene.control.TextField
+import scalafx.scene.control.Label
+import scalafx.scene.layout.GridPane
+import scalafx.scene.control.ComboBox
+import scalafx.scene.control.Button
+import scalafx.geometry.Insets
 
 /**
  * @author jforster
@@ -13,10 +20,20 @@ import scalafx.scene.control.{TableCell, TableColumn, TableView}
  */
 object CustomerOrderGUI extends BorderPane {
   //Load in customer order list data
-  val cOList = ObservableBuffer[CustomerOrder](
+  var cOList = ObservableBuffer[CustomerOrder](
       //TODO connect to actual loader and database instead of dummy data
       DummyData.getCustomerOrdersByAll()
       )
+      
+  //create filter Strings
+  var filterList = ObservableBuffer(
+    "Order ID", "Order Status", "Date Placed", "Employee ID"    
+  )
+  
+  //create stored variables from interactions with GUI
+  var filterTextField = new TextField {
+     prefWidth = 150
+  }
       
   //create tableview of customer orders in the center of the borderpane
   center_=(new TableView[CustomerOrder](cOList){
@@ -40,5 +57,30 @@ object CustomerOrderGUI extends BorderPane {
       text = "Date Shipped"
       cellValueFactory = {_.value.dShipped}
     })
+    columnResizePolicy = TableView.ConstrainedResizePolicy
+  })
+  bottom_=(new GridPane{
+    padding = Insets(10)
+    hgap = 10
+    add(new Label{
+    
+    text = "Filter:"
+  }, 0, 0)
+    add(filterTextField, 1, 0)
+    add(new ComboBox[String]{
+      items = filterList
+      prefWidth = 100
+    }, 2, 0)
+    add(new Button{
+      text = "Filter Results"
+      onAction = handle {println(filterTextField.text.getValue)
+        DummyData.getCustomerOrderByID(Integer.parseInt(filterTextField.text.getValue))}
+    }, 3, 0)
+    add(new Button{
+      text = "Select Order"
+      onAction = handle {
+        
+      }
+    }, 4, 0)
   })
 }

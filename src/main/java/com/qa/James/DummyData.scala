@@ -34,4 +34,14 @@ object DummyData {
   def getCustomerOrderStatusByID(): CustomerOrderStatus = {
     new CustomerOrderStatus(1, "Placed")
   }
+  
+  def getCustomerOrderByID(id:Int): CustomerOrder = {
+    var result: CustomerOrder = null
+    for (i:Int <- 0 to getCustomerOrdersByAll().size - 1) {
+      if (getCustomerOrdersByAll.apply(i).idCustomerOrder == id){
+        result = getCustomerOrdersByAll.apply(i)
+      }
+    }
+    result
+  }
 }
