@@ -73,8 +73,8 @@ object CustomerOrderGUI extends BorderPane {
     }, 2, 0)
     add(new Button{
       text = "Filter Results"
-      onAction = handle {println(filterTextField.text.getValue)
-        DummyData.getCustomerOrderByID(Integer.parseInt(filterTextField.text.getValue))}
+      onAction = handle {cOList.clear()
+        cOList.append(DummyData.getCustomerOrderByID(Integer.parseInt(filterTextField.text.getValue)))}
     }, 3, 0)
     add(new Button{
       text = "Select Order"
