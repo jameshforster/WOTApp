@@ -50,6 +50,7 @@ object GUIApp extends JFXApp {
           add(new Button("Login"){
             prefWidth = 50
             alignmentInParent_=(scalafx.geometry.Pos.CenterRight)
+            onAction = handle {MainGUI.initUI}
           }, 0,0)
           add(new Button("Quit"){
             prefWidth = 50
