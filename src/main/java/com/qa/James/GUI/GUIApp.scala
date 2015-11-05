@@ -25,11 +25,13 @@ import scalafx.application.Platform
 import scalafx.scene.control.Label
 import scalafx.scene.control.TextField
 import scalafx.scene.control.PasswordField
+import javafx.geometry.Pos
 
 object GUIApp extends JFXApp {
  
   stage=new PrimaryStage {
     title = "Login"
+    resizable = false
     scene = new Scene {
       content = new BorderPane{
         center_=(new GridPane{
@@ -42,8 +44,18 @@ object GUIApp extends JFXApp {
           add(new PasswordField{}, 1,1)
         })
         bottom_=(new GridPane{
-          add(new Button("Login"){}, 0,0)
-          add(new Button("Quit"){}, 1,0)
+          alignmentInParent_=(scalafx.geometry.Pos.CenterRight)
+          padding = Insets(10,10,10,165)
+          hgap = 10
+          add(new Button("Login"){
+            prefWidth = 50
+            alignmentInParent_=(scalafx.geometry.Pos.CenterRight)
+          }, 0,0)
+          add(new Button("Quit"){
+            prefWidth = 50
+            alignmentInParent_=(scalafx.geometry.Pos.CenterRight)
+            onAction = handle {Platform.exit()}
+          }, 1,0)
         })
       }
     }
