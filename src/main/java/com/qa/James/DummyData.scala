@@ -1,0 +1,37 @@
+package com.qa.James
+
+import com.qa.James.entities.CustomerOrder
+import com.qa.James.entities.Employee
+import com.qa.James.entities.User
+import com.qa.James.entities.Role
+import java.text.SimpleDateFormat
+import com.qa.James.entities.CustomerOrderStatus
+import java.util.Date
+
+/**
+ * @author jforster
+ */
+object DummyData {
+  val dF = new SimpleDateFormat("dd/MM/yy")
+  def getCustomerOrdersByAll(): Array[CustomerOrder] = {
+   var order1 = new CustomerOrder(1, null, getCustomerOrderStatusByID, null, null, getEmployeeByID(1), dF.parse("08/10/15"), dF.parse("08/11/15"), false)
+   var order2 = new CustomerOrder(2, null, getCustomerOrderStatusByID, null, null, getEmployeeByID(2), dF.parse("10/10/15"), dF.parse("08/12/15"), false)
+   Array[CustomerOrder](order1, order2)
+  }
+  
+  def getEmployeeByID(id:Int): Employee = {
+    new Employee(getUserByID(id), getRoleByRoleID)
+  }
+  
+  def getUserByID(id:Int): User = {
+    new User(id, "Ben.Back", "spikerules", "")
+  }
+  
+  def getRoleByRoleID(): Role = {
+    new Role(1, "Warehouse Operative")
+  }
+  
+  def getCustomerOrderStatusByID(): CustomerOrderStatus = {
+    new CustomerOrderStatus(1, "Placed")
+  }
+}

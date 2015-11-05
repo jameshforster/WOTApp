@@ -27,6 +27,10 @@ import scalafx.scene.control.TextField
 import scalafx.scene.control.PasswordField
 import javafx.geometry.Pos
 
+/**
+ * @author jforster
+ * Object to start up the GUI and land on the login screen
+ */
 object GUIApp extends JFXApp {
  
   stage=new PrimaryStage {
@@ -34,6 +38,7 @@ object GUIApp extends JFXApp {
     resizable = false
     scene = new Scene {
       content = new BorderPane{
+        //create labels and input fields in the center of the borderpane
         center_=(new GridPane{
           padding = Insets(20)
           hgap = 20
@@ -43,18 +48,16 @@ object GUIApp extends JFXApp {
           add(new Label("Enter Password:"){}, 0,1)
           add(new PasswordField{}, 1,1)
         })
+        //create buttons and actions in the bottom of the borderpane
         bottom_=(new GridPane{
-          alignmentInParent_=(scalafx.geometry.Pos.CenterRight)
           padding = Insets(10,10,10,165)
           hgap = 10
           add(new Button("Login"){
             prefWidth = 50
-            alignmentInParent_=(scalafx.geometry.Pos.CenterRight)
             onAction = handle {MainGUI.initUI}
           }, 0,0)
           add(new Button("Quit"){
             prefWidth = 50
-            alignmentInParent_=(scalafx.geometry.Pos.CenterRight)
             onAction = handle {Platform.exit()}
           }, 1,0)
         })

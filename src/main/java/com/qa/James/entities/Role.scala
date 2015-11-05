@@ -6,6 +6,7 @@ import scalafx.beans.property.ObjectProperty
 
 /**
  * @author jforster
+ * Class to hold employee role objects
  */
 class Role (val idRole:Int, val roleName:String){
   

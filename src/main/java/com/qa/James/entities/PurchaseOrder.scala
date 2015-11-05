@@ -4,6 +4,7 @@ import java.util.Date
 
 /**
  * @author jforster
+ * Class to hold the purchase order objects
  */
 class PurchaseOrder (val idPurchaseOrder:Int, val supplier:Supplier, var purchaseOrderStatus:PurchaseOrderStatus, var lines:Array[PurchaseOrderLine], var employee:Employee, var dateExpected:Date, var datePlaced:Date){
   //constructor for no assigned employee

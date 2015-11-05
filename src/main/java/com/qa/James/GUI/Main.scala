@@ -17,17 +17,19 @@ object MainGUI extends JFXApp {
       title = "Warehouse Order Tracking System"
       resizable = false
       scene = new Scene {
-        content = new TabPane {
-           tabs_=(Seq(new Tab{
-             text = "Customer Orders"
-             content = new Label("Hello world")
-             closable = false
-           },
-           new Tab{
-             text = "Purchase Orders"
-             content = new Label("Purchase Order List")
-             closable = false
-           }))
+        content = new BorderPane {
+          center_= (new TabPane {
+             tabs_=(Seq(new Tab{
+               text = "Customer Orders"
+               content = CustomerOrderGUI
+               closable = false
+             },
+             new Tab{
+               text = "Purchase Orders"
+               content = new Label("Purchase Order List")
+               closable = false
+             }))
+          })
         }
       }
     }
