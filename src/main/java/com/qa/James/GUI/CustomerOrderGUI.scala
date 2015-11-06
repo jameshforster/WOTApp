@@ -13,6 +13,7 @@ import scalafx.scene.layout.GridPane
 import scalafx.scene.control.ComboBox
 import scalafx.scene.control.Button
 import scalafx.geometry.Insets
+import com.qa.James.loader.CustomerOrderLoader
 
 /**
  * @author jforster
@@ -20,9 +21,10 @@ import scalafx.geometry.Insets
  */
 object CustomerOrderGUI extends BorderPane {
   //Load in customer order list data
+  val cOLoader = new CustomerOrderLoader[Unit]
   var cOList = ObservableBuffer[CustomerOrder](
       //TODO connect to actual loader and database instead of dummy data
-      DummyData.getCustomerOrdersByAll()
+      cOLoader.queryCustomerOrders(cOLoader.createQueryAllCustomerOrders, ())
       )
       
   //create filter Strings

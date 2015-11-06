@@ -24,7 +24,7 @@ object DummyData {
   }
   
   def getUserByID(id:Int): User = {
-    new User(id, "Ben.Back", "spikerules", "")
+    new User(id, "spikerules", "Ben", "Back",  "ben.back@NBgardens.co.uk", false)
   }
   
   def getRoleByRoleID(): Role = {

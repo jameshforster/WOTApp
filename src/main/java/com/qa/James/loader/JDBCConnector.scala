@@ -15,6 +15,7 @@ object JDBCConnector {
   val url = "jdbc:mysql://localhost/mydb"
   val username = "root"
   val password = "root"
+  var statement:Statement = null
   
   var connection:Connection = null
   
@@ -62,8 +63,9 @@ object JDBCConnector {
   def executeSQL(f:(String, Statement) => ResultSet, sql:String):ResultSet = {
     var rs:ResultSet = null
     try{
-      val statement = makeConnectionSQL.createStatement()
+      statement = makeConnectionSQL.createStatement()
       rs = f(sql, statement)
+      println("Test")
       }
     catch{
       case sqle:SQLException => sqle.printStackTrace()
@@ -79,10 +81,15 @@ object JDBCConnector {
    */
   def querySQL(sql:String, statement:Statement):ResultSet = {
     try{
-      statement.executeQuery(sql)
+      var rs = statement.executeQuery(sql)
+      rs.next()
+      println(rs.getInt("customerorder.idCustomerOrder"))
+      rs
+      
     }
     catch{
-      case sqle:SQLException => null
+      case sqle:SQLException => {sqle.printStackTrace()
+        null}
     }
   }
   
