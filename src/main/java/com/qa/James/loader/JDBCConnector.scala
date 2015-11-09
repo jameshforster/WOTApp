@@ -44,9 +44,8 @@ object JDBCConnector {
    * Method to close the connection to the database
    * param: Connection to close
    */
-  def closeConnectionSQL(conn:Connection):Unit = {
+  def closeConnectionSQL():Unit = {
    try {
-    connection = conn
     connection.close()
    }
    catch{
@@ -55,17 +54,19 @@ object JDBCConnector {
   }
   
   /**
-   * Method to create a statement and execute any sql command 
-   * param f: function that executes the sql in the correct way (query vs update)
-   * param sql: string containing the command to run in sql
+   * Method to create a statement and execute any SQL command 
+   * param f:(String, Statement) => ResultSet: Function that executes the SQL command in the correct way (query vs update)
+   * Valid function JDBCConnector.querySQL: Runs command as an SQL QUERY
+   * Valid function JDBCConnector.updateSQL: Runs command as an SQL UPDATE
+   * param sql: String containing the command to run in SQL
    * return: ResultSet produced from query, or null if one is not produced
    */
   def executeSQL(f:(String, Statement) => ResultSet, sql:String):ResultSet = {
     var rs:ResultSet = null
     try{
-      statement = makeConnectionSQL.createStatement()
+      connection = makeConnectionSQL()
+      statement = connection.createStatement()
       rs = f(sql, statement)
-      println("Test")
       }
     catch{
       case sqle:SQLException => sqle.printStackTrace()
@@ -81,11 +82,7 @@ object JDBCConnector {
    */
   def querySQL(sql:String, statement:Statement):ResultSet = {
     try{
-      var rs = statement.executeQuery(sql)
-      rs.next()
-      println(rs.getInt("customerorder.idCustomerOrder"))
-      rs
-      
+      statement.executeQuery(sql) 
     }
     catch{
       case sqle:SQLException => {sqle.printStackTrace()

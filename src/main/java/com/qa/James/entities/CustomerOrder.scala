@@ -15,6 +15,18 @@ class CustomerOrder (val idCustomerOrder:Int, val customer:Customer, var custome
   var cOID = new ObjectProperty(this, "cOID", idCustomerOrder)
   var cOStatus = new StringProperty(this, "cOStatus", customerOrderStatus.statusName)
   var eID = new ObjectProperty(this, "eID", employee.user.idUser)
-  var dPlaced = new StringProperty(this, "dPlaced", dF.format(datePlaced))
-  var dShipped = new StringProperty(this, "dShipped", dF.format(dateShipped))
+  var dPlaced: StringProperty = null
+  var dShipped: StringProperty = null
+  try {
+    dPlaced = new StringProperty(this, "dPlaced", dF.format(datePlaced))
+  }
+  catch{
+    case npe:NullPointerException => dPlaced = new StringProperty(this, "dPlaced", "")
+  }
+  try {
+    dShipped = new StringProperty(this, "dShipped", dF.format(dateShipped))
+  }
+  catch{
+    case npe:NullPointerException => dShipped = new StringProperty(this, "dShipped", "")
+  }
 }

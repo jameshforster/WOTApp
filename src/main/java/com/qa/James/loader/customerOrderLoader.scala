@@ -18,7 +18,6 @@ class CustomerOrderLoader[T] {
   val sqlSelect:String = "SELECT customerorder.*, customerorderstatus.*, employee.*, customer.*, employeeUser.*, customerUser.*, role.*"
   val sqlFrom:String = " FROM customerorder"
   val sqlJoins:String = " LEFT JOIN customerorderstatus ON customerorder.idCustomerOrderStatus = customerorderstatus.idCustomerOrderStatus LEFT JOIN employee ON customerorder.idEmployee = employee.idEmployee LEFT JOIN customer ON customerorder.idCustomer = customer.idUser LEFT JOIN user AS employeeUser ON employee.idEmployee = employeeUser.idUser LEFT JOIN user AS customerUser ON customer.idUser = customerUser.idUser LEFT JOIN role ON role.idRole = employee.role_idRole"
-  val testList: Array[CustomerOrder] = null
   
   /**
    * Method to create the sql command to query all customer orders
@@ -28,13 +27,33 @@ class CustomerOrderLoader[T] {
     sqlSelect + sqlFrom + sqlJoins
   }
   
-  def queryCustomerOrders(f: T => String, t:T): Array[CustomerOrder] = {
-    var rs = JDBCConnector.executeSQL(JDBCConnector.querySQL, f(t)) 
-    rs.next()
-    println("Not Null Loader")
-    createCustomerOrderEntities(rs, testList)
+  /**
+   * Method to create the SQL command to query customer orders with the input ID
+   * return: String containing the sql command to query
+   */
+  def createQueryCustomerOrdersByID(i:T): String = {
+    sqlSelect + sqlFrom + sqlJoins + " WHERE customerorder.idCustomerOrder = " + i
   }
   
+  /**
+   * Method to query customer orders based on input function
+   * param f:(T) => String: Function that takes a search parameter and creats an SQL query based on it
+   * Valid function CustomerOrderLoader.createQueryAllCustomerOrders: Creates query to search for all customer orders
+   * Valid function CustomerOrderLoader.createQueryCustomerOrdersByID: Creates query to search for customer orders with the same ID (T:Int)
+   * param t: Generic attribute defined by search term
+   * returns: The produced Array of CustomerOrder objects
+   */
+  def queryCustomerOrders(f: T => String, t:T): Array[CustomerOrder] = {
+    var rs = JDBCConnector.executeSQL(JDBCConnector.querySQL, f(t)) 
+    createCustomerOrderEntities(rs, null)
+  }
+  
+  /**
+   * Method to load data from database into the relevant entities through recursion
+   * param rs: ResultSet of ibnformation from the database
+   * param list: current Array of CustomerOrders already created
+   * returns: Array of CustomerOrders constructed from ResultSet
+   */
   def createCustomerOrderEntities(rs:ResultSet, list:Array[CustomerOrder]): Array[CustomerOrder] = {
     if (rs.next()) {
       //construct user
@@ -45,12 +64,27 @@ class CustomerOrderLoader[T] {
       var employee = new Employee(user, role)
       var customerOrderStatus = new CustomerOrderStatus (rs.getInt("customerorderstatus.idCustomerOrderStatus"), rs.getString("customerorderstatus.status"))
       //TODO get customer order lines
+      var customerOrderLine = new CustomerOrderLine(1,null,1,1)
       var customerOrderLines:Array[CustomerOrderLine] = null
-      //TODO get address
-      var address:Address = null
-      var customerOrder = new CustomerOrder(rs.getInt("customerorder.idCustomerOrder"), customer, customerOrderStatus, address, customerOrderLines, employee, rs.getDate("customerorder.datePlaced"), rs.getDate("customerorder.dateShipped"), rs.getBoolean("customerOrder.isPaid"))
-      createCustomerOrderEntities(rs, list:+(customerOrder))
+      //TODO get address from MongoDB
+      var address = new Address(1, 1, null, "Gnome City", "GN0 M3S")
+      var customerOrder:CustomerOrder = null
+      customerOrder = new CustomerOrder(rs.getInt("customerorder.idCustomerOrder"), customer, customerOrderStatus, address, customerOrderLines, employee, rs.getDate("customerorder.datePlaced"), rs.getDate("customerorder.dateShipped"), rs.getBoolean("customerOrder.isPaid"))
+      //if an Array exists, append to it, else create a new Array
+      if (list != null) {
+        createCustomerOrderEntities(rs, list:+(customerOrder))
+      }
+      else {
+        var tempList = new Array[CustomerOrder](1)
+        tempList(0) = customerOrder
+        createCustomerOrderEntities(rs, tempList)
+      }
+      
     }
-    list
+    else {
+      rs.close()
+      JDBCConnector.closeConnectionSQL()
+      list
+    }
   }
 }
