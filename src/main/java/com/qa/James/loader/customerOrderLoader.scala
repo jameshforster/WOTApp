@@ -12,7 +12,7 @@ import com.qa.James.entities.Address
 
 /**
  * @author jforster
- * Object to manage loading of customer orders from database and create relevant entities
+ * Class to manage loading of customer orders from database and create relevant entities
  */
 class CustomerOrderLoader[T] {
   val sqlSelect:String = "SELECT customerorder.*, customerorderstatus.*, employee.*, customer.*, employeeUser.*, customerUser.*, role.*"
@@ -50,7 +50,7 @@ class CustomerOrderLoader[T] {
   
   /**
    * Method to load data from database into the relevant entities through recursion
-   * param rs: ResultSet of ibnformation from the database
+   * param rs: ResultSet of information from the database
    * param list: current Array of CustomerOrders already created
    * returns: Array of CustomerOrders constructed from ResultSet
    */
@@ -66,8 +66,9 @@ class CustomerOrderLoader[T] {
       //TODO get customer order lines
       var customerOrderLine = new CustomerOrderLine(1,null,1,1)
       var customerOrderLines:Array[CustomerOrderLine] = null
-      //TODO get address from MongoDB
-      var address = new Address(1, 1, null, "Gnome City", "GN0 M3S")
+      // get address from MongoDB
+      val aL = new AddressLoader[Int]
+      val address = aL.queryAddress("AddressID", rs.getInt("customerorder.idAddress")).apply(0)
       var customerOrder:CustomerOrder = null
       customerOrder = new CustomerOrder(rs.getInt("customerorder.idCustomerOrder"), customer, customerOrderStatus, address, customerOrderLines, employee, rs.getDate("customerorder.datePlaced"), rs.getDate("customerorder.dateShipped"), rs.getBoolean("customerOrder.isPaid"))
       //if an Array exists, append to it, else create a new Array

@@ -83,8 +83,7 @@ object CustomerOrderGUI extends BorderPane {
       //TODO modify to filter from database not from dummy data
       onAction = handle {cOList.clear()
           filterTerms.value.apply() match {
-            case "Order ID" => println("Order ID filter selected")
-                try{cOLoader = new CustomerOrderLoader[Int]
+            case "Order ID" => try{cOLoader = new CustomerOrderLoader[Int]
                   cOList.clear()
                   cOList.appendAll(cOLoader.queryCustomerOrders(cOLoader.createQueryCustomerOrdersByID, Integer.parseInt(filterTextField.text.getValue)))
                   }
