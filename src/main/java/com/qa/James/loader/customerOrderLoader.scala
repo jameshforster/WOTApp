@@ -37,7 +37,7 @@ class CustomerOrderLoader[T] {
   
   /**
    * Method to query customer orders based on input function
-   * param f:(T) => String: Function that takes a search parameter and creats an SQL query based on it
+   * param f:(T) => String: Function that takes a search parameter and creates an SQL query based on it
    * Valid function CustomerOrderLoader.createQueryAllCustomerOrders: Creates query to search for all customer orders
    * Valid function CustomerOrderLoader.createQueryCustomerOrdersByID: Creates query to search for customer orders with the same ID (T:Int)
    * param t: Generic attribute defined by search term
