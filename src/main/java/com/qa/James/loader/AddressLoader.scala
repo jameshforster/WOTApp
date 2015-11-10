@@ -21,7 +21,7 @@ class AddressLoader [T] {
     var addressList: Array[Address] = null
     for (x <- result) {
       val addressLines: Array[String] = null
-      val address = new Address(Integer.parseInt(x.get("AddressID").toString()), Integer.parseInt(x.get("CustomerID").toString()), addressLines, x.get("City").toString(), x.get("Postcode").toString())
+      val address = new Address(x.get("AddressID").asInstanceOf[Double].toInt, x.get("CustomerID").asInstanceOf[Double].toInt, addressLines, x.get("City").toString(), x.get("Postcode").toString())
       if (addressList != null) {
         addressList.+:(address)
       }

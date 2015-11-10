@@ -14,13 +14,13 @@ class CustomerOrderLineLoader [T]{
   /**
    * Method to query customer order lines based on input function
    * param f:(T) => String: Function that takes a search parameter and creates an SQL query based on it
+   * Valid function CustomerOrderLineLoader.createQueryCustomerOrderLinesByOrderID: Creates query to search for customer order lines with the same order ID
    * param t: Generic attribute defined by search term
    * returns: The produced Array of CustomerOrder objects
    */
   def queryCustomerOrderLines(f: T => String, t:T): Array[CustomerOrderLine] = {
     var rs = JDBCConnector.executeSQL(JDBCConnector.querySQL, f(t))
-    
-    null
+    createCustomerOrderLineEntities(rs, null)
   }
   
   /**
@@ -30,8 +30,9 @@ class CustomerOrderLineLoader [T]{
    * returns: Array of CustomerOrderLines constructed from ResultSet
    */
   def createCustomerOrderLineEntities(rs:ResultSet, list:Array[CustomerOrderLine]): Array[CustomerOrderLine] = {
+    val iL = new ItemLoader[Int]
     if (rs.next()) {
-      var item = new Item(1, "test", 10, "test", 20, 15, false, 0, 0, false)
+      var item = iL.queryItem("ItemID", rs.getInt("idItem")).head
       var customerOrderLine = new CustomerOrderLine(rs.getInt("idCustomerOrder"), item, rs.getInt("quantity"), rs.getInt("quantityPicked"))
       if (list != null) {
         createCustomerOrderLineEntities(rs, list:+(customerOrderLine))
@@ -47,5 +48,12 @@ class CustomerOrderLineLoader [T]{
       JDBCConnector.closeConnectionSQL()
       list
     }
+  }
+   /**
+   * Method to create the SQL command to query customer order lines with the input ID
+   * return: String containing the sql command to query
+   */
+  def createQueryCustomerOrderLinesByOrderID(id:T): String = {
+    sqlSelect + sqlFrom + " WHERE customerorderline.idCustomerOrder = " + id
   }
 }

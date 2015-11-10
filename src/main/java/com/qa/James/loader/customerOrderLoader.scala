@@ -64,8 +64,8 @@ class CustomerOrderLoader[T] {
       var employee = new Employee(user, role)
       var customerOrderStatus = new CustomerOrderStatus (rs.getInt("customerorderstatus.idCustomerOrderStatus"), rs.getString("customerorderstatus.status"))
       //TODO get customer order lines
-      var customerOrderLine = new CustomerOrderLine(1,null,1,1)
-      var customerOrderLines:Array[CustomerOrderLine] = null
+      val cOLLoader = new CustomerOrderLineLoader[Int]
+      var customerOrderLines:Array[CustomerOrderLine] = cOLLoader.queryCustomerOrderLines(cOLLoader.createQueryCustomerOrderLinesByOrderID, rs.getInt("customerorder.idCustomerOrder"))
       // get address from MongoDB
       val aL = new AddressLoader[Int]
       val address = aL.queryAddress("AddressID", rs.getInt("customerorder.idAddress")).apply(0)
