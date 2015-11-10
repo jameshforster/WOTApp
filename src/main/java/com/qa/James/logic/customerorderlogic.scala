@@ -4,7 +4,12 @@ import com.qa.James.entities.CustomerOrder
 
 
 object CustomerOrderLogic {
-  def getAllCustomerOrders():Array[CustomerOrder] = {
-    null
+  def updateCustomerOrder(cO:CustomerOrder){
+    cO.customerOrderStatus.idCustomerOrderStatus match {
+      case 1 => {
+        
+      }
+      case _ => println("Not a valid customer order ID")
+    }
   }
 }

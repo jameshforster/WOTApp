@@ -101,10 +101,17 @@ class IndividualCustomerOrder() extends JFXApp {
           center_= (tV)
           
           //create button to return to main GUI
-          bottom_=(new Button("Back"){
+          bottom_=(new GridPane{
+            add(new Button("Back"){
             onAction = handle {
               MainGUI.initUI
             }
+          }, 0, 0)
+            add(new Button("Update"){
+              onAction = handle {
+                
+              }
+            }, 0, 1)
           })
         }
       }

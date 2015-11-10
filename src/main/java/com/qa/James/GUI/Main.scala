@@ -11,12 +11,16 @@ import scalafx.scene.control.Label
 import scalafx.scene.layout.GridPane
 import scalafx.scene.control.Button
 import scalafx.geometry.Insets
+import com.qa.James.entities.Employee
 
 /**
  * @author jforster
  * ScalaFX App object to hold main GUI and load Panes from other objects
  */
 object MainGUI extends JFXApp {
+  //currently logged in employee
+  var employee:Employee = null
+  
   def initUI {
     stage = new PrimaryStage {
       title = "Warehouse Order Tracking System"
