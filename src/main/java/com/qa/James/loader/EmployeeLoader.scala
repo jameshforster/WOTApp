@@ -57,7 +57,6 @@ class EmployeeLoader [T] {
   }
   
   def createQueryEmployeeByEmail (i:T): String = {
-    println( sqlSelect + sqlFrom + sqlJoins + " WHERE CONTAINS(user.email, '" + i + "')")
     sqlSelect + sqlFrom + sqlJoins + " WHERE user.email LIKE '%" + i + "%'"
   }
 }
