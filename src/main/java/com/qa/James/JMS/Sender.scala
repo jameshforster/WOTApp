@@ -13,7 +13,7 @@ class Sender {
     
     def sendMessage(toSend:MessageContent) {
       try {
-        val connFactory:ActiveMQConnectionFactory = new ActiveMQConnectionFactory("tcp://localhost")
+        val connFactory:ActiveMQConnectionFactory = new ActiveMQConnectionFactory("tcp://localhost:8081")
         
         val connection = connFactory.createConnection()
         connection.start()
