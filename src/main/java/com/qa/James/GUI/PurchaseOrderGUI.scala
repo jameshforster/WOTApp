@@ -14,7 +14,6 @@ import scalafx.scene.layout.GridPane
 import scalafx.scene.control.Button
 import scalafx.scene.control.Label
 import scalafx.geometry.Insets
-import com.qa.James.loader.CustomerOrderLoader
 
 /**
  * @author jforster
@@ -107,6 +106,8 @@ object PurchaseOrderGUI extends BorderPane{
     add(new Button{
       text = "Reset Filters"
       onAction = handle {
+        pOList.clear()
+        pOList.appendAll(pOLoader.queryPurchaseOrders(pOLoader.createQueryAllPurchaseOrders, ()))
       }
     }, 4, 0)
     
@@ -117,7 +118,6 @@ object PurchaseOrderGUI extends BorderPane{
         var selected = tV.getSelectionModel.getSelectedItem.idPurchaseOrder
         val iPO = new IndividualPurchaseOrder()
         iPO.initUI(selected)
-        //TODO load individual purchase order
       }
     }, 5, 0)
   })

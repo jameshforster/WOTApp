@@ -1,9 +1,9 @@
 package com.qa.James.logic
 
-import com.qa.James.entities.CustomerOrder
-import com.qa.James.loader.CustomerOrderStatusLoader
 import com.qa.James.GUI.MainGUI
+import com.qa.James.entities.CustomerOrder
 import com.qa.James.loader.CustomerOrderLoader
+import com.qa.James.loader.CustomerOrderStatusLoader
 
 
 object CustomerOrderLogic {

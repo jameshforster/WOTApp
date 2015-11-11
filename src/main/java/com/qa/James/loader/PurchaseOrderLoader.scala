@@ -15,10 +15,15 @@ class PurchaseOrderLoader [T] {
   val sqlSelect:String = "SELECT purchaseorder.*, purchaseorderstatus.*, employee.*, role.*, supplier.*, user.*"
   val sqlFrom:String = " FROM purchaseorder"
   val sqlJoins:String = " LEFT JOIN purchaseorderstatus ON purchaseorder.idPurchaseOrderStatus = purchaseorderstatus.idPurchaseOrderStatus LEFT JOIN employee ON purchaseorder.idEmployee = employee.idEmployee LEFT JOIN role ON role.idRole = employee.role_idRole LEFT JOIN user ON user.idUser = employee.idEmployee LEFT JOIN supplier ON supplier.idSupplier = purchaseorder.idSupplier"
-
+  val sqlUpdate:String = "UPDATE purchaseorder"
+  
   def queryPurchaseOrders(f: T => String, t:T): Array[PurchaseOrder] = {
     var rs = JDBCConnector.executeSQL(JDBCConnector.querySQL, f(t))
     createPurchaseOrderEntities(rs, null)
+  }
+  
+  def updatePurchaseOrders(f: PurchaseOrder => String, pO:PurchaseOrder) {
+    JDBCConnector.executeSQL(JDBCConnector.updateSQL, f(pO))
   }
   
   def createPurchaseOrderEntities(rs:ResultSet, list:Array[PurchaseOrder]): Array[PurchaseOrder] = {
@@ -56,6 +61,10 @@ class PurchaseOrderLoader [T] {
   
   def createQueryPurchaseOrderByID(i:T): String = {
     sqlSelect + sqlFrom + sqlJoins + " WHERE purchaseorder.idPurchaseOrder = " + i
+  }
+  
+  def updatePurchaseOrderByStatus(pO:PurchaseOrder):String = {
+    sqlUpdate + " SET idPurchaseOrderStatus = " + pO.purchaseOrderStatus.idPurchaseOrderStatus + ", idEmployee = " + pO.employee.user.idUser + " WHERE idPurchaseOrder = " + pO.idPurchaseOrder
   }
   
 }

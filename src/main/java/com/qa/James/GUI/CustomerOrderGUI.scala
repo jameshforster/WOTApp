@@ -86,7 +86,6 @@ object CustomerOrderGUI extends BorderPane {
     //create button to update results based on a search function
     add(new Button{
       text = "Filter Results"
-      //TODO modify to filter from database not from dummy data
       onAction = handle {cOList.clear()
           filterTerms.value.apply() match {
             case "Order ID" => try{val cOLoader2 = new CustomerOrderLoader[Int]

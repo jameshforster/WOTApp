@@ -15,6 +15,7 @@ import scalafx.scene.layout.BorderPane
 import scalafx.scene.control.Button
 import scalafx.scene.control.Label
 import scalafx.Includes._
+import com.qa.James.logic.PurchaseOrderLogic
 
 /**
  * @author jforster
@@ -101,7 +102,7 @@ class IndividualPurchaseOrder extends JFXApp{
           }, 0, 0)
             add(new Button("Update"){
               onAction = handle {
-               //TODO update purchase order status
+               PurchaseOrderLogic.updatePurchaseOrder(purchaseOrder)
               }
             }, 0, 1)
           })
