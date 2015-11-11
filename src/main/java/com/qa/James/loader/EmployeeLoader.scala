@@ -16,6 +16,8 @@ class EmployeeLoader [T] {
   /**
    * Method to query employees based on input function
    * param f:(T) => String: Function that takes a search parameter and creates an SQL query based on it
+   * Valid function EmployeeLoader.createQueryEmployeeByID: Creates query to search for all Employees with the input ID (T:Int)
+   * Valid function EmployeeLoader.createQueryEmployeeByEmail: Creats query to search for all Employees with emails containing the input String (T:String)
    * param t: Generic attribute defined by search term
    * returns: The produced Array of Employee objects
    */
@@ -52,10 +54,18 @@ class EmployeeLoader [T] {
     }
   }
   
+  /**
+   * Method to create the SQL command to query employees with the input ID
+   * return: String containing the sql command to query
+   */
   def createQueryEmployeeByID (i:T):String = {
     sqlSelect + sqlFrom + sqlJoins + " WHERE employee.idEmployee = " + i
   }
   
+  /**
+   * Method to create the SQL command to query employees with an email containing the input String
+   * return: String containing the sql command to query
+   */
   def createQueryEmployeeByEmail (i:T): String = {
     sqlSelect + sqlFrom + sqlJoins + " WHERE user.email LIKE '%" + i + "%'"
   }

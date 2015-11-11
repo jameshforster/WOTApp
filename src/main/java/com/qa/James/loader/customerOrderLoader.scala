@@ -18,6 +18,7 @@ class CustomerOrderLoader[T] {
   val sqlSelect:String = "SELECT customerorder.*, customerorderstatus.*, employee.*, customer.*, employeeUser.*, customerUser.*, role.*"
   val sqlFrom:String = " FROM customerorder"
   val sqlJoins:String = " LEFT JOIN customerorderstatus ON customerorder.idCustomerOrderStatus = customerorderstatus.idCustomerOrderStatus LEFT JOIN employee ON customerorder.idEmployee = employee.idEmployee LEFT JOIN customer ON customerorder.idCustomer = customer.idUser LEFT JOIN user AS employeeUser ON employee.idEmployee = employeeUser.idUser LEFT JOIN user AS customerUser ON customer.idUser = customerUser.idUser LEFT JOIN role ON role.idRole = employee.role_idRole"
+  val sqlUpdate:String = "UPDATE customerorder"
   
   /**
    * Method to create the sql command to query all customer orders
@@ -36,9 +37,18 @@ class CustomerOrderLoader[T] {
   }
   
   /**
+   * Method to create the SQL command to update customer order's status and employee
+   * return: String containing the sql command to update
+   */
+  def updateCustomerOrderByStatus(cO:CustomerOrder): String = {
+    println(sqlUpdate + "SET idCustomerOrderStatus = " + cO.customerOrderStatus.idCustomerOrderStatus + ", idEmployee = " + cO.employee.user.idUser + " WHERE idCustomerOrder = " + cO.idCustomerOrder)
+    sqlUpdate + " SET idCustomerOrderStatus = " + cO.customerOrderStatus.idCustomerOrderStatus + ", idEmployee = " + cO.employee.user.idUser + " WHERE idCustomerOrder = " + cO.idCustomerOrder
+  }
+  
+  /**
    * Method to query customer orders based on input function
    * param f:(T) => String: Function that takes a search parameter and creates an SQL query based on it
-   * Valid function CustomerOrderLoader.createQueryAllCustomerOrders: Creates query to search for all customer orders
+   * Valid function CustomerOrderLoader.createQueryAllCustomerOrders: Creates query to search for all customer orders (T: Unit)
    * Valid function CustomerOrderLoader.createQueryCustomerOrdersByID: Creates query to search for customer orders with the same ID (T:Int)
    * param t: Generic attribute defined by search term
    * returns: The produced Array of CustomerOrder objects
@@ -46,6 +56,16 @@ class CustomerOrderLoader[T] {
   def queryCustomerOrders(f: T => String, t:T): Array[CustomerOrder] = {
     var rs = JDBCConnector.executeSQL(JDBCConnector.querySQL, f(t)) 
     createCustomerOrderEntities(rs, null)
+  }
+  
+  /**
+   * Method to update customer orders based on input function
+   * param f:(CustomerOrder) => String: Function that takes an input customer order and creates an SQL update from it
+   * Valid function CustomerOrderLoader.updateCustomerOrderByStatus: Creates update based on CustomerOrderStatus and Employee of CustomerOrder
+   * param cO: CustomerOrder to be updated in the database
+   */
+  def updateCustomerOrders(f: CustomerOrder => String, cO:CustomerOrder) {
+    JDBCConnector.executeSQL(JDBCConnector.updateSQL, f(cO))
   }
   
   /**

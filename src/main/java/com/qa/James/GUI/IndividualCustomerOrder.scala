@@ -16,6 +16,7 @@ import scalafx.scene.control.TableColumn
 import scalafx.scene.control.TableColumn._
 import scalafx.Includes._
 import scalafx.scene.control.Button
+import com.qa.James.logic.CustomerOrderLogic
 
 /**
  * @author jforster
@@ -109,7 +110,7 @@ class IndividualCustomerOrder() extends JFXApp {
           }, 0, 0)
             add(new Button("Update"){
               onAction = handle {
-                
+                CustomerOrderLogic.updateCustomerOrder(customerOrder)
               }
             }, 0, 1)
           })
