@@ -41,7 +41,6 @@ class CustomerOrderLoader[T] {
    * return: String containing the sql command to update
    */
   def updateCustomerOrderByStatus(cO:CustomerOrder): String = {
-    println(sqlUpdate + "SET idCustomerOrderStatus = " + cO.customerOrderStatus.idCustomerOrderStatus + ", idEmployee = " + cO.employee.user.idUser + " WHERE idCustomerOrder = " + cO.idCustomerOrder)
     sqlUpdate + " SET idCustomerOrderStatus = " + cO.customerOrderStatus.idCustomerOrderStatus + ", idEmployee = " + cO.employee.user.idUser + " WHERE idCustomerOrder = " + cO.idCustomerOrder
   }
   

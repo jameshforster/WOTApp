@@ -38,7 +38,7 @@ object MainGUI extends JFXApp {
              },
              new Tab{
                text = "Purchase Orders"
-               content = new Label("Purchase Order List")
+               content = PurchaseOrderGUI
                closable = false
              }))
           })

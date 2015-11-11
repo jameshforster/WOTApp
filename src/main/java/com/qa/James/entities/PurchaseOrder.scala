@@ -32,7 +32,7 @@ class PurchaseOrder (val idPurchaseOrder:Int, val supplier:Supplier, var purchas
     case npe:NullPointerException => dPlaced = new StringProperty(this, "dPlaced", "")
   }
   try {
-    dExpected = new StringProperty(this, "dShipped", dF.format(dExpected))
+    dExpected = new StringProperty(this, "dShipped", dF.format(dateExpected))
   }
   catch{
     case npe:NullPointerException => dExpected = new StringProperty(this, "dShipped", "")
