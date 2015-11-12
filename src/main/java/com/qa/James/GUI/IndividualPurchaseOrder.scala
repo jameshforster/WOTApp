@@ -27,16 +27,20 @@ import scalafx.scene.control.Dialog
 import scalafx.scene.control.Alert.AlertType
 import com.qa.James.logic.PurchaseOrderLineLogic
 import scalafx.scene.control.TextInputDialog
+import com.qa.James.entities.PurchaseOrder
 
 
 /**
  * @author jforster
  */
 class IndividualPurchaseOrder extends JFXApp{
+  var purchaseOrder:PurchaseOrder = null
+  var label:Label = null
+  var pOLList:ObservableBuffer[PurchaseOrderLine] = null
   def initUI(purchaseOrderID:Int) {
     val dF = new SimpleDateFormat("dd/MM/yy")
     val pOLoader = new PurchaseOrderLoader[Int]
-    val purchaseOrder = pOLoader.queryPurchaseOrders(pOLoader.createQueryPurchaseOrderByID, purchaseOrderID).head
+    purchaseOrder = pOLoader.queryPurchaseOrders(pOLoader.createQueryPurchaseOrderByID, purchaseOrderID).head
     var datePlaced: String = ""
     var dateExpected:String = ""
     
@@ -54,7 +58,20 @@ class IndividualPurchaseOrder extends JFXApp{
         case npe:NullPointerException => dateExpected = ""
       }
       
-      var pOLList = ObservableBuffer[PurchaseOrderLine](purchaseOrder.lines)
+      label = new Label{
+            text = (  "Order ID:  " + purchaseOrder.idPurchaseOrder + "\n"
+                            + "Order Status: " + purchaseOrder.purchaseOrderStatus.statusName + "\n"
+                            + "Supplier: " + purchaseOrder.supplier.supplierName + "\n"
+                            + "Employee ID: " + purchaseOrder.employee.user.idUser + "\n"
+                            + "Date Placed: " + datePlaced + "\n"
+                            + "Date Expected: " + dateExpected + "\n")
+            style = "-fx-font-size: 16pt"
+
+          }
+      
+      pOLList = ObservableBuffer[PurchaseOrderLine](purchaseOrder.lines)
+      
+      
       
        //create table view
       var tV = new TableView[PurchaseOrderLine](pOLList){
@@ -95,16 +112,7 @@ class IndividualPurchaseOrder extends JFXApp{
       scene = new Scene {
         content = new BorderPane {
           padding = Insets(10)
-          top_=(new Label{
-            text = (  "Order ID:  " + purchaseOrder.idPurchaseOrder + "\n"
-                            + "Order Status: " + purchaseOrder.purchaseOrderStatus.statusName + "\n"
-                            + "Supplier: " + purchaseOrder.supplier.supplierName + "\n"
-                            + "Employee ID: " + purchaseOrder.employee.user.idUser + "\n"
-                            + "Date Placed: " + datePlaced + "\n"
-                            + "Date Expected: " + dateExpected + "\n")
-            style = "-fx-font-size: 16pt"
-
-          })
+          top_=(label)
           
           //create main table display
           center_= (tV)
@@ -123,13 +131,16 @@ class IndividualPurchaseOrder extends JFXApp{
             add(new Button("Update"){
               prefWidth = 120
               onAction = handle {
+               purchaseOrder = pOLoader.queryPurchaseOrders(pOLoader.createQueryPurchaseOrderByID, purchaseOrderID).head
                PurchaseOrderLogic.updatePurchaseOrder(purchaseOrder)
+               reload(purchaseOrder.idPurchaseOrder)
               }
             }, 1, 0)
             add(new Button("Report Damage"){
               prefWidth = 120
               onAction = handle {
-                if (purchaseOrder.purchaseOrderStatus.idPurchaseOrderStatus == 2) {
+                purchaseOrder = pOLoader.queryPurchaseOrders(pOLoader.createQueryPurchaseOrderByID, purchaseOrderID).head
+                if (purchaseOrder.purchaseOrderStatus.idPurchaseOrderStatus == 3) {
                   if (purchaseOrder.employee.user.idUser == MainGUI.employee.user.idUser){
                     val dialog = new TextInputDialog() {
                       title = "System Input"
@@ -137,6 +148,8 @@ class IndividualPurchaseOrder extends JFXApp{
                       contentText = "Please enter number of damaged items:"
                     }
                     PurchaseOrderLineLogic.addDamagedStock(tV.getSelectionModel.getSelectedItem, Integer.parseInt((dialog.showAndWait().get)))
+                    
+                    
                   }
                   else {
                     new Alert(AlertType.Information){
@@ -144,6 +157,7 @@ class IndividualPurchaseOrder extends JFXApp{
                     headerText = "Cannot Record Damage"
                     contentText =  "Cannot set damaged stock on a purchase order claimed by employeeID: " + purchaseOrder.employee.user.idUser
                   }.showAndWait()
+                 
                   }
                 }
                 else {
@@ -152,7 +166,9 @@ class IndividualPurchaseOrder extends JFXApp{
                     headerText = "Cannot Record Damage"
                     contentText =  "Cannot set damaged stock to a purchase order unless the order is in the state: Arrived!"
                   }.showAndWait()
+                  
                 }
+                reload(purchaseOrder.idPurchaseOrder)
               }
             }, 0, 0)
           })
@@ -160,5 +176,37 @@ class IndividualPurchaseOrder extends JFXApp{
       }
     }
     stage.show()
+  }
+  
+  def reload (pOID:Int){
+    val dF = new SimpleDateFormat("dd/MM/yy")
+    val pOLoader = new PurchaseOrderLoader[Int]
+    purchaseOrder = pOLoader.queryPurchaseOrders(pOLoader.createQueryPurchaseOrderByID, pOID).head
+    var datePlaced: String = ""
+    var dateExpected:String = ""
+    
+    try {
+        datePlaced = dF.format(purchaseOrder.datePlaced)
+      }
+      catch{
+        case npe:NullPointerException => datePlaced = ""
+      }
+      
+      try {
+        dateExpected = dF.format(purchaseOrder.dateExpected)
+      }
+      catch{
+        case npe:NullPointerException => dateExpected = ""
+      }
+      
+      label.text = ("Order ID:  " + purchaseOrder.idPurchaseOrder + "\n"
+                            + "Order Status: " + purchaseOrder.purchaseOrderStatus.statusName + "\n"
+                            + "Supplier: " + purchaseOrder.supplier.supplierName + "\n"
+                            + "Employee ID: " + purchaseOrder.employee.user.idUser + "\n"
+                            + "Date Placed: " + datePlaced + "\n"
+                            + "Date Expected: " + dateExpected + "\n")
+      
+      pOLList.clear()
+      pOLList.appendAll(purchaseOrder.lines)
   }
 }

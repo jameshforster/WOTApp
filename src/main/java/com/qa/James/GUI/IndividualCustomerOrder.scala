@@ -19,18 +19,21 @@ import scalafx.scene.control.Button
 import com.qa.James.logic.CustomerOrderLogic
 import scalafx.geometry.Insets
 import scalafx.stage.Stage
+import com.qa.James.entities.CustomerOrder
 
 /**
  * @author jforster
  * Class to create the display for an individual customer order
  */
 class IndividualCustomerOrder() extends JFXApp {
-  
+  var customerOrder:CustomerOrder = null
+  var cOLList:ObservableBuffer[CustomerOrderLine] = null
+  var label:Label = null
   
   def initUI(customerOrderID:Int) {
       val dF = new SimpleDateFormat("dd/MM/yy")
       val cOLoader = new CustomerOrderLoader[Int]
-      val customerOrder = cOLoader.queryCustomerOrders(cOLoader.createQueryCustomerOrdersByID, customerOrderID).head
+      customerOrder = cOLoader.queryCustomerOrders(cOLoader.createQueryCustomerOrdersByID, customerOrderID).head
       var datePlaced:String = ""
       var dateShipped:String = ""
       
@@ -50,8 +53,18 @@ class IndividualCustomerOrder() extends JFXApp {
         case npe:NullPointerException => dateShipped = ""
       }
       
+      label = new Label{
+            text = (  "Order ID:  " + customerOrder.idCustomerOrder + "\n"
+                            + "Order Status: " + customerOrder.customerOrderStatus.statusName + "\n"
+                            + "Customer ID: " + customerOrder.customer.user.idUser + "\n"
+                            + "Employee ID: " + customerOrder.employee.user.idUser + "\n"
+                            + "Date Placed: " + datePlaced + "\n"
+                            + "Date Shipped: " + dateShipped + "\n")
+            style = "-fx-font-size: 16pt"
+          }
+      
       //load customer order lines into observable buffer
-      var cOLList = ObservableBuffer[CustomerOrderLine](
+      cOLList = ObservableBuffer[CustomerOrderLine](
         customerOrder.lines
         )
       //create table view
@@ -93,15 +106,7 @@ class IndividualCustomerOrder() extends JFXApp {
       scene = new Scene {
         content = new BorderPane {
           padding = Insets(10)
-          top_=(new Label{
-            text = (  "Order ID:  " + customerOrder.idCustomerOrder + "\n"
-                            + "Order Status: " + customerOrder.customerOrderStatus.statusName + "\n"
-                            + "Customer ID: " + customerOrder.customer.user.idUser + "\n"
-                            + "Employee ID: " + customerOrder.employee.user.idUser + "\n"
-                            + "Date Placed: " + datePlaced + "\n"
-                            + "Date Shipped: " + dateShipped + "\n")
-            style = "-fx-font-size: 16pt"
-          })
+          top_=(label)
           
           //create main table display
           prefWidth = 650
@@ -120,7 +125,9 @@ class IndividualCustomerOrder() extends JFXApp {
             add(new Button("Update"){
                prefWidth = 120
               onAction = handle {
+                customerOrder = cOLoader.queryCustomerOrders(cOLoader.createQueryCustomerOrdersByID, customerOrderID).head
                 CustomerOrderLogic.updateCustomerOrder(customerOrder)
+                reload(customerOrder.idCustomerOrder)
               }
             }, 1, 0)
             add (new Button("Pick Item"){
@@ -132,5 +139,40 @@ class IndividualCustomerOrder() extends JFXApp {
       }
     }
     stage.show()
+  }
+  
+  def reload(cOID:Int){
+    val dF = new SimpleDateFormat("dd/MM/yy")
+      val cOLoader = new CustomerOrderLoader[Int]
+      customerOrder = cOLoader.queryCustomerOrders(cOLoader.createQueryCustomerOrdersByID, cOID).head
+      var datePlaced:String = ""
+      var dateShipped:String = ""
+      
+      
+      //Try and format the dates into a string or set to empty if value is null
+      try {
+        datePlaced = dF.format(customerOrder.datePlaced)
+      }
+      catch{
+        case npe:NullPointerException => datePlaced = ""
+      }
+      
+      try {
+        dateShipped = dF.format(customerOrder.dateShipped)
+      }
+      catch{
+        case npe:NullPointerException => dateShipped = ""
+      }
+      
+      label.text = (  "Order ID:  " + customerOrder.idCustomerOrder + "\n"
+                            + "Order Status: " + customerOrder.customerOrderStatus.statusName + "\n"
+                            + "Customer ID: " + customerOrder.customer.user.idUser + "\n"
+                            + "Employee ID: " + customerOrder.employee.user.idUser + "\n"
+                            + "Date Placed: " + datePlaced + "\n"
+                            + "Date Shipped: " + dateShipped + "\n")
+            
+      
+      cOLList.clear()
+      cOLList.appendAll(customerOrder.lines)
   }
 }

@@ -6,6 +6,7 @@ import com.qa.James.loader.CustomerOrderLoader
 import com.qa.James.loader.CustomerOrderStatusLoader
 import scalafx.scene.control.Alert
 import scalafx.scene.control.Alert.AlertType
+import com.qa.James.GUI.CustomerOrderGUI
 
 
 object CustomerOrderLogic {
@@ -18,6 +19,8 @@ object CustomerOrderLogic {
         cO.employee = MainGUI.employee
         cOLoader.updateCustomerOrders(cOLoader.updateCustomerOrderByStatus, cO)
         updatedCustomerOrderMessage(cO)
+        CustomerOrderGUI.cOList.clear()
+        CustomerOrderGUI.cOList.appendAll(cOLoader.queryCustomerOrders(cOLoader.createQueryAllCustomerOrders, ()))
       }
       case 2 => {
         if (cO.employee.user.idUser == MainGUI.employee.user.idUser){
@@ -26,6 +29,8 @@ object CustomerOrderLogic {
           cO.employee = MainGUI.employee
           cOLoader.updateCustomerOrders(cOLoader.updateCustomerOrderByStatus, cO)
           updatedCustomerOrderMessage(cO)
+          CustomerOrderGUI.cOList.clear()
+          CustomerOrderGUI.cOList.appendAll(cOLoader.queryCustomerOrders(cOLoader.createQueryAllCustomerOrders, ()))
         }
         else {
            new Alert(AlertType.Information){
@@ -40,12 +45,16 @@ object CustomerOrderLogic {
           cO.employee = MainGUI.employee
           cOLoader.updateCustomerOrders(cOLoader.updateCustomerOrderByStatus, cO)
           updatedCustomerOrderMessage(cO)
+          CustomerOrderGUI.cOList.clear()
+          CustomerOrderGUI.cOList.appendAll(cOLoader.queryCustomerOrders(cOLoader.createQueryAllCustomerOrders, ()))
       }
       case 4 => {
         cO.customerOrderStatus = cOSLoader.queryCustomerOrderStatus(cOSLoader.createQueryCustomerOrderStatusByID, 5).head
           cO.employee = MainGUI.employee
           cOLoader.updateCustomerOrders(cOLoader.updateCustomerOrderByStatus, cO)
           updatedCustomerOrderMessage(cO)
+          CustomerOrderGUI.cOList.clear()
+          CustomerOrderGUI.cOList.appendAll(cOLoader.queryCustomerOrders(cOLoader.createQueryAllCustomerOrders, ()))
       }
       case _ => new Alert(AlertType.Information){
                         title = "System Message"

@@ -7,6 +7,7 @@ import com.qa.James.GUI.MainGUI
 import com.qa.James.JMS.Sender
 import scalafx.scene.control.Alert
 import scalafx.scene.control.Alert.AlertType
+import com.qa.James.GUI.PurchaseOrderGUI
 
 
 /**
@@ -18,7 +19,7 @@ object PurchaseOrderLogic {
     val pOLoader = new PurchaseOrderLoader[Unit]
     pO.purchaseOrderStatus.idPurchaseOrderStatus match {
       case 2 => {
-        pO.purchaseOrderStatus = pOSLoader.queryPurchaseOrderStatus(pOSLoader.createQueryPurchaseOrderStatusByID, 2).head
+        pO.purchaseOrderStatus = pOSLoader.queryPurchaseOrderStatus(pOSLoader.createQueryPurchaseOrderStatusByID, 3).head
         pO.employee = MainGUI.employee
         pOLoader.updatePurchaseOrders(pOLoader.updatePurchaseOrderByStatus, pO)
         
@@ -31,10 +32,12 @@ object PurchaseOrderLogic {
         
         //notify user of confirmation
         updatedPurchaseOrderMessage(pO)
+        PurchaseOrderGUI.pOList.clear()
+        PurchaseOrderGUI.pOList.appendAll(pOLoader.queryPurchaseOrders(pOLoader.createQueryAllPurchaseOrders, ()))
       }
       case 3 => {
         if (pO.employee.user.idUser == MainGUI.employee.user.idUser){
-          pO.purchaseOrderStatus = pOSLoader.queryPurchaseOrderStatus(pOSLoader.createQueryPurchaseOrderStatusByID, 1).head
+          pO.purchaseOrderStatus = pOSLoader.queryPurchaseOrderStatus(pOSLoader.createQueryPurchaseOrderStatusByID, 4).head
           pO.employee = MainGUI.employee
           pOLoader.updatePurchaseOrders(pOLoader.updatePurchaseOrderByStatus, pO)
           
@@ -47,6 +50,8 @@ object PurchaseOrderLogic {
           
           //notify user of confirmation
           updatedPurchaseOrderMessage(pO)
+          PurchaseOrderGUI.pOList.clear()
+          PurchaseOrderGUI.pOList.appendAll(pOLoader.queryPurchaseOrders(pOLoader.createQueryAllPurchaseOrders, ()))
         }
         else {
           new Alert(AlertType.Information){
@@ -67,8 +72,9 @@ object PurchaseOrderLogic {
     new Alert(AlertType.Information){
                         title = "System Message"
                         headerText = "Update Completed"
-                        contentText =  "The customer order has been updated to: " + purchaseOrder.purchaseOrderStatus.statusName + "\nBy employee ID: " + purchaseOrder.employee.user.idUser
+                        contentText =  "The purchase order has been updated to: " + purchaseOrder.purchaseOrderStatus.statusName + "\nBy employee ID: " + purchaseOrder.employee.user.idUser
                       }.showAndWait()
+                     
   }
   
   def convertPurchaseOrderToJava(pO:PurchaseOrder):entities.PurchaseOrder ={
