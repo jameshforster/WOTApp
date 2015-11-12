@@ -9,6 +9,12 @@ class ItemLoader [T] {
   
   val collection = "Items"
   
+  /**
+   * Method to query the MongoDB database using a column name and search value
+   * param searchTerm: String containing name of MongoDB column to filter by
+   * param t: Generic containing value for filter to search for
+   * return: Array[Item] of all matching items
+   */
   def queryItem(searchTerm:String, t:T): Array[Item] = {
     val mC = new MongoConnector [T] (collection)
     val result = mC.queryMongo(searchTerm, t)

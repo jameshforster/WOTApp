@@ -55,7 +55,7 @@ object CustomerOrderGUI extends BorderPane {
       
   //create filter Strings
   val filterList = ObservableBuffer(
-    "Order ID", "Order Status", "Date Placed", "Employee ID"    
+    "Order ID", "Order Status", "Employee ID"    
   )
   
   //create stored variables from interactions with GUI
@@ -101,9 +101,24 @@ object CustomerOrderGUI extends BorderPane {
                     contentText =  "Invalid order ID inputted!"
                   }.showAndWait()
                 }
-            case "Order Status" => println ("Order status filter selected")
+            case "Order Status" => val cOLoader2 = new CustomerOrderLoader[String]
+                    cOList.clear()
+                    cOList.appendAll(cOLoader2.queryCustomerOrders(cOLoader2.createQueryCustomerOrdersByStatus, filterTextField.text.getValue))
+                  
             case "Date Placed" => println ("Date placed filter selected")
-            case "Employee ID" => println ("Employee ID filter selected")
+            case "Employee ID" => try{
+              val cOLoader2 = new CustomerOrderLoader[Int]
+                  cOList.clear()
+                  cOList.appendAll(cOLoader2.queryCustomerOrders(cOLoader2.createQueryCustomerOrdersByEmployeeID, Integer.parseInt(filterTextField.text.getValue)))
+              }
+              catch{
+                case nfe:NumberFormatException => new Alert(AlertType.Information){
+                    title = "System Message"
+                    headerText = "Invalid Filter Term"
+                    contentText =  "Invalid employee ID inputted!"
+                  }.showAndWait()
+              }
+              
             case _ => new Alert(AlertType.Information){
                     title = "System Message"
                     headerText = "Invalid Filter Term"

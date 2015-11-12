@@ -14,9 +14,12 @@ import scalafx.scene.layout.GridPane
 import scalafx.scene.control.Button
 import scalafx.scene.control.Label
 import scalafx.geometry.Insets
+import scalafx.scene.control.Alert
+import scalafx.scene.control.Alert.AlertType
 
 /**
  * @author jforster
+ * Object to create the pane to display and interact with purchase orders to be loaded into the main GUI scene
  */
 object PurchaseOrderGUI extends BorderPane{
   //Load in purchase order list data
@@ -54,7 +57,7 @@ object PurchaseOrderGUI extends BorderPane{
   
   //create filter Strings
   val filterList = ObservableBuffer(
-    "Order ID", "Order Status", "Date Placed", "Employee ID"    
+    "Order ID", "Order Status", "Employee ID"    
   )
   
   //create stored variables from interactions with GUI
@@ -93,10 +96,32 @@ object PurchaseOrderGUI extends BorderPane{
       //TODO modify to filter from database not from dummy data
       onAction = handle {pOList.clear()
           filterTerms.value.apply() match {
-            case "Order ID" => 
-            case "Order Status" => println ("Order status filter selected")
+            case "Order ID" => try{val pOLoader2 = new PurchaseOrderLoader[Int]
+                  pOList.clear()
+                  pOList.appendAll(pOLoader2.queryPurchaseOrders(pOLoader2.createQueryPurchaseOrderByID, Integer.parseInt(filterTextField.text.getValue)))
+                  }
+                catch{
+                  case nfe:NumberFormatException => new Alert(AlertType.Information){
+                    title = "System Message"
+                    headerText = "Invalid Filter Term"
+                    contentText =  "Invalid order ID inputted!"
+                  }.showAndWait()
+                }
+            case "Order Status" => val pOLoader2 = new PurchaseOrderLoader[String]
+                  pOList.clear()
+                  pOList.appendAll(pOLoader2.queryPurchaseOrders(pOLoader2.createQueryPurchaseOrderByStatus, filterTextField.text.getValue))
             case "Date Placed" => println ("Date placed filter selected")
-            case "Employee ID" => println ("Employee ID filter selected")
+            case "Employee ID" => try{val pOLoader2 = new PurchaseOrderLoader[Int]
+                  pOList.clear()
+                  pOList.appendAll(pOLoader2.queryPurchaseOrders(pOLoader2.createQueryPurchaseOrderByEmployeeID, Integer.parseInt(filterTextField.text.getValue)))
+                  }
+                catch{
+                  case nfe:NumberFormatException => new Alert(AlertType.Information){
+                    title = "System Message"
+                    headerText = "Invalid Filter Term"
+                    contentText =  "Invalid employee ID inputted!"
+                  }.showAndWait()
+                }
             case _ => println("No valid filter type selected")
           }
         }
@@ -115,9 +140,18 @@ object PurchaseOrderGUI extends BorderPane{
     add(new Button{
       text = "Select Order"
       onAction = handle {
-        var selected = tV.getSelectionModel.getSelectedItem.idPurchaseOrder
-        val iPO = new IndividualPurchaseOrder()
-        iPO.initUI(selected)
+        try{
+          var selected = tV.getSelectionModel.getSelectedItem.idPurchaseOrder
+          val iPO = new IndividualPurchaseOrder()
+          iPO.initUI(selected)
+        }
+        catch{
+          case npe:NullPointerException => new Alert(AlertType.Information){
+                    title = "System Message"
+                    headerText = "No Order Selected"
+                    contentText =  "Please select an order in the table before trying to view an order!"
+                  }.showAndWait()
+        }
       }
     }, 5, 0)
   })

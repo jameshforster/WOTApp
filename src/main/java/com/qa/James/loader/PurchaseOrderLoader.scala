@@ -63,6 +63,14 @@ class PurchaseOrderLoader [T] {
     sqlSelect + sqlFrom + sqlJoins + " WHERE purchaseorder.idPurchaseOrder = " + i
   }
   
+  def createQueryPurchaseOrderByEmployeeID(i:T): String = {
+    sqlSelect + sqlFrom + sqlJoins + " WHERE purchaseorder.idEmployee = " + i
+  }
+  
+  def createQueryPurchaseOrderByStatus(i:T): String = {
+    sqlSelect + sqlFrom + sqlJoins + " WHERE purchaseorderstatus.status LIKE '%" + i + "%'"
+  }
+  
   def updatePurchaseOrderByStatus(pO:PurchaseOrder):String = {
     sqlUpdate + " SET idPurchaseOrderStatus = " + pO.purchaseOrderStatus.idPurchaseOrderStatus + ", idEmployee = " + pO.employee.user.idUser + " WHERE idPurchaseOrder = " + pO.idPurchaseOrder
   }

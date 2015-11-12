@@ -29,6 +29,7 @@ import javafx.geometry.Pos
 import com.qa.James.loader.EmployeeLoader
 import scalafx.scene.control.Alert
 import scalafx.scene.control.Alert.AlertType
+import scalafx.scene.input.KeyEvent
 
 /**
  * @author jforster
@@ -38,9 +39,13 @@ object GUIApp extends JFXApp {
  
   initUI()
   
+  /**
+   * Method to initialise the GUI and open the login screen
+   */
   def initUI() {
     val tField = new TextField
-    val pField = new PasswordField
+    val pField = new PasswordField {
+    }
     
     stage=new PrimaryStage {
       title = "Login"

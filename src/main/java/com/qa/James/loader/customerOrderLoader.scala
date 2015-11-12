@@ -37,6 +37,22 @@ class CustomerOrderLoader[T] {
   }
   
   /**
+   * Method to create the SQL command to query customer orders with the input employee ID
+   * return: String containing the sql command to query
+   */
+  def createQueryCustomerOrdersByEmployeeID(i:T): String = {
+    sqlSelect + sqlFrom + sqlJoins + " WHERE customerorder.idEmployee = " + i
+  }
+  
+  /**
+   * Method to create the SQL command to query customer orders containing a status similar to the inputted string
+   * return: String containing the sql command to query
+   */
+  def createQueryCustomerOrdersByStatus(i:T): String = {
+     sqlSelect + sqlFrom + sqlJoins + " WHERE customerorderstatus.status LIKE '%" + i + "%'"
+  }
+  
+  /**
    * Method to create the SQL command to update customer order's status and employee
    * return: String containing the sql command to update
    */
@@ -49,6 +65,8 @@ class CustomerOrderLoader[T] {
    * param f:(T) => String: Function that takes a search parameter and creates an SQL query based on it
    * Valid function CustomerOrderLoader.createQueryAllCustomerOrders: Creates query to search for all customer orders (T: Unit)
    * Valid function CustomerOrderLoader.createQueryCustomerOrdersByID: Creates query to search for customer orders with the same ID (T:Int)
+   * Valid function CustomerOrderLoader.createQueryCustomerOrdersByEmployeeID: Creates query to search for customer orders with the same employee ID (T:Int)
+   * Valid function CustomerOrderLoader.createQueryCustomerOrdersByStatus: Creates query to search for customer orders with a matching statu(T:String)
    * param t: Generic attribute defined by search term
    * returns: The produced Array of CustomerOrder objects
    */

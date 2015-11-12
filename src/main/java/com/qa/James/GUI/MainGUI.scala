@@ -23,6 +23,9 @@ object MainGUI extends JFXApp {
   //currently logged in employee
   var employee:Employee = null
   
+  /**
+   * Method to initialise the Main GUI and load the sub-panes into the tabbed pane
+   */
   def initUI {
     stage = new PrimaryStage {
       title = "Warehouse Order Tracking System"

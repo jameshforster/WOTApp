@@ -5,6 +5,7 @@ import java.sql.ResultSet
 
 /**
  * @author jforster
+ * Class to manage loading of customer order statuses from database and create relevant entities
  */
 class CustomerOrderStatusLoader [T] {
   val sqlSelect:String = "SELECT customerorderstatus.*"

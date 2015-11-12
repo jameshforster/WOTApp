@@ -7,10 +7,14 @@ import javax.jms.DeliveryMode
 
 /**
  * @author jforster
+ * Class to initialise the connection to the Backend through JMS and send a formatted message
  */
 class Sender {
     val boardName = "WOTS.OUT"
     
+    /**
+     * Method to send a constructed message to the ActiveMQ Broker
+     */
     def sendMessage(toSend:MessageContent) {
       try {
         val connFactory:ActiveMQConnectionFactory = new ActiveMQConnectionFactory("tcp://localhost:8081")

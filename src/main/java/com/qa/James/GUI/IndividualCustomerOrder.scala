@@ -30,6 +30,9 @@ class IndividualCustomerOrder() extends JFXApp {
   var cOLList:ObservableBuffer[CustomerOrderLine] = null
   var label:Label = null
   
+  /**
+   * Method to construct the stage for display and load the data
+   */
   def initUI(customerOrderID:Int) {
       val dF = new SimpleDateFormat("dd/MM/yy")
       val cOLoader = new CustomerOrderLoader[Int]
@@ -112,7 +115,7 @@ class IndividualCustomerOrder() extends JFXApp {
           prefWidth = 650
           center_= (tV)
           
-          //create button to return to main GUI
+          //create button to close the stage
           bottom_=(new GridPane{
             padding = Insets(10, 10, 10, 250)
             hgap = 10
@@ -121,7 +124,7 @@ class IndividualCustomerOrder() extends JFXApp {
             onAction = handle {
               close
             }
-          }, 2, 0)
+          }, 2, 1)
             add(new Button("Update"){
                prefWidth = 120
               onAction = handle {
@@ -129,11 +132,10 @@ class IndividualCustomerOrder() extends JFXApp {
                 CustomerOrderLogic.updateCustomerOrder(customerOrder)
                 reload(customerOrder.idCustomerOrder)
               }
-            }, 1, 0)
+            }, 1, 1)
             add (new Button("Pick Item"){
               prefWidth = 120
-            }, 0,0)
-            
+            }, 0,1)
           })
         }
       }
@@ -141,6 +143,9 @@ class IndividualCustomerOrder() extends JFXApp {
     stage.show()
   }
   
+  /**
+   * Method to refresh all the data in the GUI
+   */
   def reload(cOID:Int){
     val dF = new SimpleDateFormat("dd/MM/yy")
       val cOLoader = new CustomerOrderLoader[Int]

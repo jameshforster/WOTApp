@@ -32,11 +32,16 @@ import com.qa.James.entities.PurchaseOrder
 
 /**
  * @author jforster
+ * Class to create the display for an individual purchase order
  */
 class IndividualPurchaseOrder extends JFXApp{
   var purchaseOrder:PurchaseOrder = null
   var label:Label = null
   var pOLList:ObservableBuffer[PurchaseOrderLine] = null
+  
+  /**
+   * Method to construct the stage for display and load the data
+   */
   def initUI(purchaseOrderID:Int) {
     val dF = new SimpleDateFormat("dd/MM/yy")
     val pOLoader = new PurchaseOrderLoader[Int]
@@ -118,16 +123,17 @@ class IndividualPurchaseOrder extends JFXApp{
           center_= (tV)
           prefWidth = 650
           
-          //create button to return to main GUI
           bottom_=(new GridPane{
             padding = Insets(10, 10, 10, 250)
             hgap = 10
+            //create button to close the stage
             add(new Button("Close"){
               prefWidth = 120
             onAction = handle {
               close
             }
           }, 2, 0)
+            //create button to update orders
             add(new Button("Update"){
               prefWidth = 120
               onAction = handle {
@@ -136,39 +142,49 @@ class IndividualPurchaseOrder extends JFXApp{
                reload(purchaseOrder.idPurchaseOrder)
               }
             }, 1, 0)
+            //create button to record damaged stock of an item
             add(new Button("Report Damage"){
               prefWidth = 120
               onAction = handle {
-                purchaseOrder = pOLoader.queryPurchaseOrders(pOLoader.createQueryPurchaseOrderByID, purchaseOrderID).head
-                if (purchaseOrder.purchaseOrderStatus.idPurchaseOrderStatus == 3) {
-                  if (purchaseOrder.employee.user.idUser == MainGUI.employee.user.idUser){
-                    val dialog = new TextInputDialog() {
-                      title = "System Input"
-                      headerText = "Record Damaged Stock"
-                      contentText = "Please enter number of damaged items:"
+                try {
+                  purchaseOrder = pOLoader.queryPurchaseOrders(pOLoader.createQueryPurchaseOrderByID, purchaseOrderID).head
+                  if (purchaseOrder.purchaseOrderStatus.idPurchaseOrderStatus == 3) {
+                    if (purchaseOrder.employee.user.idUser == MainGUI.employee.user.idUser){
+                      val dialog = new TextInputDialog() {
+                        title = "System Input"
+                        headerText = "Record Damaged Stock"
+                        contentText = "Please enter number of damaged items:"
+                      }
+                      PurchaseOrderLineLogic.addDamagedStock(tV.getSelectionModel.getSelectedItem, Integer.parseInt((dialog.showAndWait().get)))
+                      
+                      
                     }
-                    PurchaseOrderLineLogic.addDamagedStock(tV.getSelectionModel.getSelectedItem, Integer.parseInt((dialog.showAndWait().get)))
-                    
-                    
+                    else {
+                      new Alert(AlertType.Information){
+                      title = "System Message"
+                      headerText = "Cannot Record Damage"
+                      contentText =  "Cannot set damaged stock on a purchase order claimed by employeeID: " + purchaseOrder.employee.user.idUser
+                    }.showAndWait()
+                   
+                    }
                   }
                   else {
                     new Alert(AlertType.Information){
-                    title = "System Message"
-                    headerText = "Cannot Record Damage"
-                    contentText =  "Cannot set damaged stock on a purchase order claimed by employeeID: " + purchaseOrder.employee.user.idUser
-                  }.showAndWait()
-                 
+                      title = "System Message"
+                      headerText = "Cannot Record Damage"
+                      contentText =  "Cannot set damaged stock to a purchase order unless the order is in the state: Arrived!"
+                    }.showAndWait()
+                    
                   }
+                  reload(purchaseOrder.idPurchaseOrder)
                 }
-                else {
-                  new Alert(AlertType.Information){
+                catch{
+                  case npe:NullPointerException => new Alert(AlertType.Information){
                     title = "System Message"
-                    headerText = "Cannot Record Damage"
-                    contentText =  "Cannot set damaged stock to a purchase order unless the order is in the state: Arrived!"
+                    headerText = "No Item Selected"
+                    contentText =  "Please select an item in the table when reporting damaged stock!"
                   }.showAndWait()
-                  
                 }
-                reload(purchaseOrder.idPurchaseOrder)
               }
             }, 0, 0)
           })
@@ -178,13 +194,18 @@ class IndividualPurchaseOrder extends JFXApp{
     stage.show()
   }
   
+  /**
+   * Method to refresh all the data in the GUI
+   */
   def reload (pOID:Int){
     val dF = new SimpleDateFormat("dd/MM/yy")
     val pOLoader = new PurchaseOrderLoader[Int]
     purchaseOrder = pOLoader.queryPurchaseOrders(pOLoader.createQueryPurchaseOrderByID, pOID).head
+    
     var datePlaced: String = ""
     var dateExpected:String = ""
     
+    //Try and format the dates into a string or set to empty if value is null
     try {
         datePlaced = dF.format(purchaseOrder.datePlaced)
       }

@@ -6,6 +6,7 @@ import com.qa.James.entities.Item
 
 /**
  * @author jforster
+ * Class to create SQL commands and load ResultSets into entities from a query for CustomerOrderLines
  */
 class CustomerOrderLineLoader [T]{
   val sqlSelect:String = "SELECT customerorderline.*"
