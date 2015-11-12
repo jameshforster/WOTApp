@@ -31,14 +31,26 @@ object CustomerOrderLogic {
            new Alert(AlertType.Information){
                         title = "System Message"
                         headerText = "Update Failed"
-                        contentText =  "Cannot update this customer order as you are not employee ID: " + cO.employee.user.idUser
+                        contentText =  "Cannot update this customer order as it has been claimed by employee ID: " + cO.employee.user.idUser
                       }.showAndWait()
         }
+      }
+      case 3 => {
+        cO.customerOrderStatus = cOSLoader.queryCustomerOrderStatus(cOSLoader.createQueryCustomerOrderStatusByID, 4).head
+          cO.employee = MainGUI.employee
+          cOLoader.updateCustomerOrders(cOLoader.updateCustomerOrderByStatus, cO)
+          updatedCustomerOrderMessage(cO)
+      }
+      case 4 => {
+        cO.customerOrderStatus = cOSLoader.queryCustomerOrderStatus(cOSLoader.createQueryCustomerOrderStatusByID, 5).head
+          cO.employee = MainGUI.employee
+          cOLoader.updateCustomerOrders(cOLoader.updateCustomerOrderByStatus, cO)
+          updatedCustomerOrderMessage(cO)
       }
       case _ => new Alert(AlertType.Information){
                         title = "System Message"
                         headerText = "Update Failed"
-                        contentText =  "Cannot update the customer order's status any further using this system."
+                        contentText =  "Cannot update the purchase order from the current status using this system.\nPlease contact the appropriate department to update."
                       }.showAndWait()
     }
   }

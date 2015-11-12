@@ -5,6 +5,8 @@ import com.qa.James.loader.PurchaseOrderLoader
 import com.qa.James.loader.PurchaseOrderStatusLoader
 import com.qa.James.GUI.MainGUI
 import com.qa.James.JMS.Sender
+import scalafx.scene.control.Alert
+import scalafx.scene.control.Alert.AlertType
 
 
 /**
@@ -16,18 +18,61 @@ object PurchaseOrderLogic {
     val pOLoader = new PurchaseOrderLoader[Unit]
     pO.purchaseOrderStatus.idPurchaseOrderStatus match {
       case 2 => {
-        pO.purchaseOrderStatus = pOSLoader.queryPurchaseOrderStatus(pOSLoader.createQueryPurchaseOrderStatusByID, 1).head
-        pO.employee = MainGUI.employee
-        pOLoader.updatePurchaseOrders(pOLoader.updatePurchaseOrderByStatus, pO)
-      }
-      case 1 => {
-        //TODO condition of having added damaged stock to system
         pO.purchaseOrderStatus = pOSLoader.queryPurchaseOrderStatus(pOSLoader.createQueryPurchaseOrderStatusByID, 2).head
         pO.employee = MainGUI.employee
         pOLoader.updatePurchaseOrders(pOLoader.updatePurchaseOrderByStatus, pO)
-        //TODO send JMS signal
+        
+        //send JMS signal to backend to report arrival
         val sender = new Sender
-        val mUser = new entities.User(pO.employee.user.userPassword, pO.employee.user.foreName, pO.employee.user.surname, pO.employee.user.email, pO.employee.user.isEmployee)
+        val mPurchaseOrder = convertPurchaseOrderToJava(pO)
+        val mC = new entities.MessageContent(mPurchaseOrder, "receivePurchaseOrder")
+        println("Sending Message")
+        sender.sendMessage(mC)
+        
+        //notify user of confirmation
+        updatedPurchaseOrderMessage(pO)
+      }
+      case 3 => {
+        if (pO.employee.user.idUser == MainGUI.employee.user.idUser){
+          pO.purchaseOrderStatus = pOSLoader.queryPurchaseOrderStatus(pOSLoader.createQueryPurchaseOrderStatusByID, 1).head
+          pO.employee = MainGUI.employee
+          pOLoader.updatePurchaseOrders(pOLoader.updatePurchaseOrderByStatus, pO)
+          
+          //send JMS signal
+          val sender = new Sender
+          val mPurchaseOrder = convertPurchaseOrderToJava(pO)
+          val mC = new entities.MessageContent(mPurchaseOrder, "completePurchaseOrder")
+          println("Sending Message")
+          sender.sendMessage(mC)
+          
+          //notify user of confirmation
+          updatedPurchaseOrderMessage(pO)
+        }
+        else {
+          new Alert(AlertType.Information){
+                        title = "System Message"
+                        headerText = "Update Failed"
+                        contentText =  "Cannot update the purchase order as it has been claimed by employee ID: " + pO.employee.user.idUser
+                      }.showAndWait()
+        }
+      }
+      case _ => new Alert(AlertType.Information){
+                        title = "System Message"
+                        headerText = "Update Failed"
+                        contentText =  "Cannot update the purchase order from the current status using this system.\nPlease contact the appropriate department to update."
+                      }.showAndWait()
+    }
+  }
+  def updatedPurchaseOrderMessage (purchaseOrder:PurchaseOrder) {
+    new Alert(AlertType.Information){
+                        title = "System Message"
+                        headerText = "Update Completed"
+                        contentText =  "The customer order has been updated to: " + purchaseOrder.purchaseOrderStatus.statusName + "\nBy employee ID: " + purchaseOrder.employee.user.idUser
+                      }.showAndWait()
+  }
+  
+  def convertPurchaseOrderToJava(pO:PurchaseOrder):entities.PurchaseOrder ={
+    val mUser = new entities.User(pO.employee.user.userPassword, pO.employee.user.foreName, pO.employee.user.surname, pO.employee.user.email, pO.employee.user.isEmployee)
         mUser.setUserID(pO.idPurchaseOrder)
         val mRole = new entities.Role(pO.employee.role.roleName)
         mRole.setID(pO.employee.role.idRole)
@@ -44,11 +89,6 @@ object PurchaseOrderLogic {
         mPurchaseOrder.setDateExpected(pO.dateExpected)
         mPurchaseOrder.setDatePlaced(pO.datePlaced)
         mPurchaseOrder.setEmployee(mEmployee)
-        val mC = new entities.MessageContent(mPurchaseOrder, "receivePurchaseOrder")
-        println("Sending Message")
-        sender.sendMessage(mC)
-      }
-      case _ => println("Not a valid customer order ID")
-    }
+        mPurchaseOrder
   }
 }
