@@ -14,6 +14,8 @@ import scalafx.scene.control.ComboBox
 import scalafx.scene.control.Button
 import scalafx.geometry.Insets
 import com.qa.James.loader.CustomerOrderLoader
+import scalafx.scene.control.Alert
+import scalafx.scene.control.Alert.AlertType
 
 /**
  * @author jforster
@@ -93,12 +95,20 @@ object CustomerOrderGUI extends BorderPane {
                   cOList.appendAll(cOLoader2.queryCustomerOrders(cOLoader2.createQueryCustomerOrdersByID, Integer.parseInt(filterTextField.text.getValue)))
                   }
                 catch{
-                  case nfe:NumberFormatException => println("Invalid Order ID entered, please use an Integer value")
+                  case nfe:NumberFormatException => new Alert(AlertType.Information){
+                    title = "System Message"
+                    headerText = "Invalid Filter Term"
+                    contentText =  "Invalid order ID inputted!"
+                  }.showAndWait()
                 }
             case "Order Status" => println ("Order status filter selected")
             case "Date Placed" => println ("Date placed filter selected")
             case "Employee ID" => println ("Employee ID filter selected")
-            case _ => println("No valid filter type selected")
+            case _ => new Alert(AlertType.Information){
+                    title = "System Message"
+                    headerText = "Invalid Filter Term"
+                    contentText =  "No filter term selected!"
+                  }.showAndWait()
           }
         }
     }, 3, 0)
@@ -116,9 +126,18 @@ object CustomerOrderGUI extends BorderPane {
     add(new Button{
       text = "Select Order"
       onAction = handle {
-        var selected = tV.getSelectionModel.getSelectedItem.idCustomerOrder
-        val iCO = new IndividualCustomerOrder()
-        iCO.initUI(selected)
+        try {
+          var selected = tV.getSelectionModel.getSelectedItem.idCustomerOrder
+          val iCO = new IndividualCustomerOrder()
+          iCO.initUI(selected)
+        }
+        catch {
+          case npe:NullPointerException => new Alert(AlertType.Information){
+                    title = "System Message"
+                    headerText = "No Order Selected"
+                    contentText =  "Please select an order in the table before trying to view an order!"
+                  }.showAndWait()
+        }
       }
     }, 5, 0)
   })

@@ -12,6 +12,8 @@ import scalafx.scene.layout.GridPane
 import scalafx.scene.control.Button
 import scalafx.geometry.Insets
 import com.qa.James.entities.Employee
+import scalafx.scene.control.Alert
+import scalafx.scene.control.Alert.AlertType
 
 /**
  * @author jforster
@@ -43,14 +45,25 @@ object MainGUI extends JFXApp {
              }))
           })
           bottom_= (new GridPane {
-            padding = Insets(10, 10, 10, 180)
+            padding = Insets(40, 10, 10, 10)
+            hgap = 480
+            add(new Label {
+              text = "Employee ID: " + employee.user.idUser + "\nEmployee Name: " + employee.user.foreName + " " + employee.user.surname + "\n" + employee.user.email
+            }, 0, 0)
             add(new Button {
               text = "Logout"
+              prefWidth = 150
+              prefHeight = 30
               onAction = handle {GUIApp.initUI()}
-            }, 0, 0)
+            }, 1, 0)
           })
         }
       }
     }
+    new Alert(AlertType.Information){
+                        title = "System Message"
+                        headerText = "Logged In"
+                        contentText =  "Welcome " + employee.user.foreName + " " + employee.user.surname + "!"
+                      }.showAndWait()
   }
 }

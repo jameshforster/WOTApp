@@ -27,6 +27,8 @@ import scalafx.scene.control.TextField
 import scalafx.scene.control.PasswordField
 import javafx.geometry.Pos
 import com.qa.James.loader.EmployeeLoader
+import scalafx.scene.control.Alert
+import scalafx.scene.control.Alert.AlertType
 
 /**
  * @author jforster
@@ -43,6 +45,8 @@ object GUIApp extends JFXApp {
     stage=new PrimaryStage {
       title = "Login"
       resizable = false
+      width = 300
+      height = 200
       scene = new Scene {
         content = new BorderPane{
           //create labels and input fields in the center of the borderpane
@@ -50,7 +54,7 @@ object GUIApp extends JFXApp {
             padding = Insets(20)
             hgap = 20
             vgap = 20
-            add(new Label("Enter User Email:"){}, 0,0)
+            add(new Label("Enter User:"){}, 0,0)
             add(tField, 1,0)
             add(new Label("Enter Password:"){}, 0,1)
             add(pField, 1,1)
@@ -73,25 +77,56 @@ object GUIApp extends JFXApp {
                     MainGUI.employee = employee
                     MainGUI.initUI
                   }
+                  else {
+                     new Alert(AlertType.Information){
+                        title = "System Message"
+                        headerText = "Login Failed"
+                        contentText =  "Incorrect Password Entered!\nPlease try again."
+                      }.showAndWait()
+                  }
                 }
                 catch {
                   case nfe:NumberFormatException => {
                     try {
-                      val eLoader = new EmployeeLoader[String]
-                      val employee = eLoader.queryEmployee(eLoader.createQueryEmployeeByEmail, identifier).head
-                      if (employee.user.userPassword == password){
-                        MainGUI.employee = employee
-                        MainGUI.initUI
+                      if (identifier.length() > 3){
+                        val eLoader = new EmployeeLoader[String]
+                        val employee = eLoader.queryEmployee(eLoader.createQueryEmployeeByEmail, identifier).head
+                        if (employee.user.userPassword == password){
+                          MainGUI.employee = employee
+                          MainGUI.initUI
+                        }
+                        else {
+                          new Alert(AlertType.Information){
+                        title = "System Message"
+                        headerText = "Login Failed"
+                        contentText =  "Input password does not match the User\nPlease try again."
+                      }.showAndWait()
+                        }
+                      }
+                      else {
+                        new Alert(AlertType.Information){
+                        title = "System Message"
+                        headerText = "Login Failed"
+                        contentText =  "User input is too short!\nYou must enter a User ID or an identifier larger than 3 characters!\nPlease try again."
+                      }.showAndWait()
                       }
                     }
                     catch{
                       case npe:NullPointerException => {
-                        println("User not found, please enter a valid email!")
+                        new Alert(AlertType.Information){
+                        title = "System Message"
+                        headerText = "Login Failed"
+                        contentText =  "User input does not match any User!\nPlease try again."
+                      }.showAndWait()
                       }
                     }
                   }
                   case npe:NullPointerException => {
-                    println("User ID not found, please enter a valid ID!")
+                    new Alert(AlertType.Information){
+                        title = "System Message"
+                        headerText = "Login Failed"
+                        contentText =  "User ID does not match any User!\nPlease try again."
+                      }.showAndWait()
                   }
                 }
                 
@@ -99,7 +134,9 @@ object GUIApp extends JFXApp {
             }, 0,0)
             add(new Button("Quit"){
               prefWidth = 50
-              onAction = handle {Platform.exit()}
+              onAction = {
+                handle {Platform.exit()}
+              }
             }, 1,0)
           })
         }

@@ -16,6 +16,18 @@ import scalafx.scene.control.Button
 import scalafx.scene.control.Label
 import scalafx.Includes._
 import com.qa.James.logic.PurchaseOrderLogic
+import scalafx.scene.paint.LinearGradient
+import scalafx.scene.paint.Stops
+import scalafx.scene.paint.Color._
+import scalafx.geometry.Insets
+import scalafx.stage.Stage
+import scalafx.scene.layout.VBox
+import scalafx.scene.control.Alert
+import scalafx.scene.control.Dialog
+import scalafx.scene.control.Alert.AlertType
+import com.qa.James.logic.PurchaseOrderLineLogic
+import scalafx.scene.control.TextInputDialog
+
 
 /**
  * @author jforster
@@ -59,7 +71,7 @@ class IndividualPurchaseOrder extends JFXApp{
           cellValueFactory = {_.value.quant}
         },
         new TableColumn[PurchaseOrderLine, Int]{
-          text = "Quantity Picked"
+          text = "Damaged Units"
           cellValueFactory = {_.value.quantD}
         },
         new TableColumn[PurchaseOrderLine, Float]{
@@ -71,43 +83,82 @@ class IndividualPurchaseOrder extends JFXApp{
           cellValueFactory = {_.value.subtotal}
         })
         columnResizePolicy = TableView.ConstrainedResizePolicy
+        prefWidth = 630
       }
       
       //create stage for the GUI
-    val stage = new PrimaryStage {
+    val stage = new Stage {
       title = "Purchase Order"
-      width = 800
-      height = 600
+      width = 650
+      height = 700
       resizable = false
       scene = new Scene {
         content = new BorderPane {
+          padding = Insets(10)
           top_=(new Label{
             text = (  "Order ID:  " + purchaseOrder.idPurchaseOrder + "\n"
                             + "Order Status: " + purchaseOrder.purchaseOrderStatus.statusName + "\n"
                             + "Supplier: " + purchaseOrder.supplier.supplierName + "\n"
                             + "Employee ID: " + purchaseOrder.employee.user.idUser + "\n"
                             + "Date Placed: " + datePlaced + "\n"
-                            + "Date Shipped: " + dateExpected + "\n")
+                            + "Date Expected: " + dateExpected + "\n")
+            style = "-fx-font-size: 16pt"
+
           })
           
           //create main table display
           center_= (tV)
+          prefWidth = 650
           
           //create button to return to main GUI
           bottom_=(new GridPane{
-            add(new Button("Back"){
+            padding = Insets(10, 10, 10, 250)
+            hgap = 10
+            add(new Button("Close"){
+              prefWidth = 120
             onAction = handle {
-              MainGUI.initUI
+              close
             }
-          }, 0, 0)
+          }, 2, 0)
             add(new Button("Update"){
+              prefWidth = 120
               onAction = handle {
                PurchaseOrderLogic.updatePurchaseOrder(purchaseOrder)
               }
-            }, 0, 1)
+            }, 1, 0)
+            add(new Button("Report Damage"){
+              prefWidth = 120
+              onAction = handle {
+                if (purchaseOrder.purchaseOrderStatus.idPurchaseOrderStatus == 2) {
+                  if (purchaseOrder.employee.user.idUser == MainGUI.employee.user.idUser){
+                    val dialog = new TextInputDialog() {
+                      title = "System Input"
+                      headerText = "Record Damaged Stock"
+                      contentText = "Please enter number of damaged items:"
+                    }
+                    PurchaseOrderLineLogic.addDamagedStock(tV.getSelectionModel.getSelectedItem, Integer.parseInt((dialog.showAndWait().get)))
+                  }
+                  else {
+                    new Alert(AlertType.Information){
+                    title = "System Message"
+                    headerText = "Cannot Record Damage"
+                    contentText =  "Cannot set damaged stock on a purchase order claimed by employeeID: " + purchaseOrder.employee.user.idUser
+                  }.showAndWait()
+                  }
+                }
+                else {
+                  new Alert(AlertType.Information){
+                    title = "System Message"
+                    headerText = "Cannot Record Damage"
+                    contentText =  "Cannot set damaged stock to a purchase order unless the order is in the state: Arrived!"
+                  }.showAndWait()
+                }
+              }
+            }, 0, 0)
           })
         }
       }
     }
+    stage.show()
   }
 }

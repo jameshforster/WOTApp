@@ -9,10 +9,15 @@ import com.qa.James.entities.PurchaseOrderLine
 class PurchaseOrderLineLoader [T] {
   val sqlSelect:String = "SELECT purchaseorderline.*"
   val sqlFrom:String = " FROM purchaseorderline"
+  val sqlUpdate:String = "UPDATE purchaseorderline"
   
   def queryPurchaseOrderLines(f: T => String, t:T): Array[PurchaseOrderLine] = {
     var rs = JDBCConnector.executeSQL(JDBCConnector.querySQL, f(t))
     createPurchaseOrderLineEntities(rs, null)
+  }
+  
+  def updatePurchaseOrderLine(f: PurchaseOrderLine => String, pOL:PurchaseOrderLine) {
+    JDBCConnector.executeSQL(JDBCConnector.updateSQL, f(pOL))
   }
   
   def createPurchaseOrderLineEntities(rs:ResultSet, list:Array[PurchaseOrderLine]): Array[PurchaseOrderLine] = {
@@ -37,7 +42,10 @@ class PurchaseOrderLineLoader [T] {
   }
   
   def createQueryPurchaseOrderLinesByOrderID(id:T): String = {
-    println(sqlSelect + sqlFrom + " WHERE purchaseorderline.idPurchaseOrder = " + id)
     sqlSelect + sqlFrom + " WHERE purchaseorderline.idPurchaseOrder = " + id
+  }
+  
+  def createUpdatePurchaseOrderLinesDamagedStock(pOL:PurchaseOrderLine): String = {
+    sqlUpdate + " SET quantityDamaged = " + pOL.damagedQuantity + " WHERE idPurchaseOrder = " + pOL.idPurchaseOrder + " AND idItem = " + pOL.item.idItem
   }
 }

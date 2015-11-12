@@ -17,6 +17,8 @@ import scalafx.scene.control.TableColumn._
 import scalafx.Includes._
 import scalafx.scene.control.Button
 import com.qa.James.logic.CustomerOrderLogic
+import scalafx.geometry.Insets
+import scalafx.stage.Stage
 
 /**
  * @author jforster
@@ -79,16 +81,18 @@ class IndividualCustomerOrder() extends JFXApp {
           cellValueFactory = {_.value.subtotal}
         })
         columnResizePolicy = TableView.ConstrainedResizePolicy
+        prefWidth = 630
       }
       
     //create stage for the GUI
-    val stage = new PrimaryStage {
+    val stage:Stage = new Stage {
       title = "Customer Order"
-      width = 800
-      height = 600
+      width = 650
+      height = 700
       resizable = false
       scene = new Scene {
         content = new BorderPane {
+          padding = Insets(10)
           top_=(new Label{
             text = (  "Order ID:  " + customerOrder.idCustomerOrder + "\n"
                             + "Order Status: " + customerOrder.customerOrderStatus.statusName + "\n"
@@ -96,26 +100,37 @@ class IndividualCustomerOrder() extends JFXApp {
                             + "Employee ID: " + customerOrder.employee.user.idUser + "\n"
                             + "Date Placed: " + datePlaced + "\n"
                             + "Date Shipped: " + dateShipped + "\n")
+            style = "-fx-font-size: 16pt"
           })
           
           //create main table display
+          prefWidth = 650
           center_= (tV)
           
           //create button to return to main GUI
           bottom_=(new GridPane{
-            add(new Button("Back"){
+            padding = Insets(10, 10, 10, 250)
+            hgap = 10
+            add(new Button("Close"){
+               prefWidth = 120
             onAction = handle {
-              MainGUI.initUI
+              close
             }
-          }, 0, 0)
+          }, 2, 0)
             add(new Button("Update"){
+               prefWidth = 120
               onAction = handle {
                 CustomerOrderLogic.updateCustomerOrder(customerOrder)
               }
-            }, 0, 1)
+            }, 1, 0)
+            add (new Button("Pick Item"){
+              prefWidth = 120
+            }, 0,0)
+            
           })
         }
       }
     }
+    stage.show()
   }
 }
