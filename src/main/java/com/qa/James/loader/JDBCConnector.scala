@@ -5,6 +5,7 @@ import java.sql.DriverManager
 import java.sql.SQLException
 import java.sql.ResultSet
 import java.sql.Statement
+import com.mysql.jdbc.exceptions.MySQLSyntaxErrorException
 
 /**
  * Object to maintain connection to the database and execute queries
@@ -102,7 +103,8 @@ object JDBCConnector {
       null
     }
     catch{
-      case sqle:SQLException => sqle.printStackTrace()
+      case sqle:SQLException => 
+        sqle.printStackTrace()
         null
     }
   }
