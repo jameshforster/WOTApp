@@ -12,12 +12,18 @@ import com.qa.James.GUI.PurchaseOrderGUI
 
 /**
  * @author jforster
+ * Object to manage logic application in regards to purchase orders
  */
 object PurchaseOrderLogic {
+  
+  /**
+   * Method to update purchase orders from current state and check whether operation is permitted
+   */
   def updatePurchaseOrder(pO:PurchaseOrder){
     val pOSLoader = new PurchaseOrderStatusLoader[Int]
     val pOLoader = new PurchaseOrderLoader[Unit]
     pO.purchaseOrderStatus.idPurchaseOrderStatus match {
+      //order status is "Awaiting"
       case 2 => {
         pO.purchaseOrderStatus = pOSLoader.queryPurchaseOrderStatus(pOSLoader.createQueryPurchaseOrderStatusByID, 3).head
         pO.employee = MainGUI.employee
@@ -35,6 +41,7 @@ object PurchaseOrderLogic {
         PurchaseOrderGUI.pOList.clear()
         PurchaseOrderGUI.pOList.appendAll(pOLoader.queryPurchaseOrders(pOLoader.createQueryAllPurchaseOrders, ()))
       }
+      //order status is "Arrived"
       case 3 => {
         if (pO.employee.user.idUser == MainGUI.employee.user.idUser){
           pO.purchaseOrderStatus = pOSLoader.queryPurchaseOrderStatus(pOSLoader.createQueryPurchaseOrderStatusByID, 4).head
@@ -53,6 +60,7 @@ object PurchaseOrderLogic {
           PurchaseOrderGUI.pOList.clear()
           PurchaseOrderGUI.pOList.appendAll(pOLoader.queryPurchaseOrders(pOLoader.createQueryAllPurchaseOrders, ()))
         }
+        //purchase order is already being handled by another employee
         else {
           new Alert(AlertType.Information){
                         title = "System Message"
@@ -61,6 +69,7 @@ object PurchaseOrderLogic {
                       }.showAndWait()
         }
       }
+      //purchase order cannot be updated from this state by the WOTApp
       case _ => new Alert(AlertType.Information){
                         title = "System Message"
                         headerText = "Update Failed"
@@ -68,6 +77,7 @@ object PurchaseOrderLogic {
                       }.showAndWait()
     }
   }
+  //purchase order successfully updated
   def updatedPurchaseOrderMessage (purchaseOrder:PurchaseOrder) {
     new Alert(AlertType.Information){
                         title = "System Message"
@@ -77,6 +87,9 @@ object PurchaseOrderLogic {
                      
   }
   
+  /**
+   * Method to convert purchase order to java entity for connection to rest of system
+   */
   def convertPurchaseOrderToJava(pO:PurchaseOrder):entities.PurchaseOrder ={
     val mUser = new entities.User(pO.employee.user.userPassword, pO.employee.user.foreName, pO.employee.user.surname, pO.employee.user.email, pO.employee.user.isEmployee)
         mUser.setUserID(pO.idPurchaseOrder)

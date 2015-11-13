@@ -66,7 +66,7 @@ class CustomerOrderLoader[T] {
    * Valid function CustomerOrderLoader.createQueryAllCustomerOrders: Creates query to search for all customer orders (T: Unit)
    * Valid function CustomerOrderLoader.createQueryCustomerOrdersByID: Creates query to search for customer orders with the same ID (T:Int)
    * Valid function CustomerOrderLoader.createQueryCustomerOrdersByEmployeeID: Creates query to search for customer orders with the same employee ID (T:Int)
-   * Valid function CustomerOrderLoader.createQueryCustomerOrdersByStatus: Creates query to search for customer orders with a matching statu(T:String)
+   * Valid function CustomerOrderLoader.createQueryCustomerOrdersByStatus: Creates query to search for customer orders with a matching status(T:String)
    * param t: Generic attribute defined by search term
    * returns: The produced Array of CustomerOrder objects
    */
