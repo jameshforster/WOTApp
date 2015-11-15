@@ -40,6 +40,29 @@ class PurchaseOrderLoaderTest extends FlatSpec{
     }
   }
   
+  createUpdatePurchaseOrderByStatusTest
+  def createUpdatePurchaseOrderByStatusTest{
+    "SQL Update" should "equal the update string" in {
+      val pOLoader = new PurchaseOrderLoader[Int]
+      val pO = pOLoader.queryPurchaseOrders(pOLoader.createQueryPurchaseOrderByID, 1).head
+      assert(pOLoader.updatePurchaseOrderByStatus(pO).equals("UPDATE purchaseorder SET idPurchaseOrderStatus = 2, idEmployee = 1 WHERE idPurchaseOrder = 1"))
+    }
+  }
+  
+  updatePurchaseOrdersTest
+  def updatePurchaseOrdersTest {
+    "The database PurchaseOrder" should "be equal to the input one" in{
+      val pOLoader = new PurchaseOrderLoader[Int]
+      val pO = pOLoader.queryPurchaseOrders(pOLoader.createQueryPurchaseOrderByID, 1).head
+      val pOSLoader = new PurchaseOrderStatusLoader[Int]
+      val pOS = pOSLoader.queryPurchaseOrderStatus(pOSLoader.createQueryPurchaseOrderStatusByID, pO.purchaseOrderStatus.idPurchaseOrderStatus + 1).head
+      pO.purchaseOrderStatus = pOS
+      pOLoader.updatePurchaseOrders(pOLoader.updatePurchaseOrderByStatus, pO)
+      assert(pOLoader.queryPurchaseOrders(pOLoader.createQueryPurchaseOrderByID, 1).head.purchaseOrderStatus.idPurchaseOrderStatus == pOS.idPurchaseOrderStatus)
+      
+    }
+  }
+  
   createPurchaseOrderEntitiesTest
   def createPurchaseOrderEntitiesTest {
     "Array" should "not be empty" in {

@@ -16,6 +16,26 @@ class PurchaseOrderLineLoaderTest extends FlatSpec{
     }
   }
   
+  createUpdatePurchaseOrderLinesDamagedStockTest
+  def createUpdatePurchaseOrderLinesDamagedStockTest{
+    "SQL Update" should "be equal to input query" in {
+      val pOLLoader = new PurchaseOrderLineLoader[Int]
+      val pOL = pOLLoader.queryPurchaseOrderLines(pOLLoader.createQueryPurchaseOrderLinesByOrderID, 1).head
+      assert(pOLLoader.createUpdatePurchaseOrderLinesDamagedStock(pOL).equals("UPDATE purchaseorderline SET quantityDamaged = 0 WHERE idPurchaseOrder = 1 AND idItem = 1"))
+    }
+  }
+  
+  updatePurchaseOrderLineTest
+  def updatePurchaseOrderLineTest{
+    "The database PurchaseOrderLine" should "be equal to the input one" in {
+      val pOLLoader = new PurchaseOrderLineLoader[Int]
+      val pOL = pOLLoader.queryPurchaseOrderLines(pOLLoader.createQueryPurchaseOrderLinesByOrderID, 1).head
+      pOL.damagedQuantity = 5
+      pOLLoader.updatePurchaseOrderLine(pOLLoader.createUpdatePurchaseOrderLinesDamagedStock, pOL)
+      assert(pOLLoader.queryPurchaseOrderLines(pOLLoader.createQueryPurchaseOrderLinesByOrderID, 1).head.damagedQuantity.equals(pOL.damagedQuantity))
+    }
+  }
+  
   createPurchaseOrderLineEntities
   def createPurchaseOrderLineEntities {
      "Array[PurchaseOrderLine] " should "not be empty" in {
@@ -33,6 +53,7 @@ class PurchaseOrderLineLoaderTest extends FlatSpec{
        assert(pOLLoader.createPurchaseOrderLineEntities(JDBCConnector.executeSQL(JDBCConnector.querySQL, pOLLoader.createQueryPurchaseOrderLinesByOrderID(1)), null).head != null)
      }
   }
+  
   
   queryPurchaseOrderLinesTest
   def queryPurchaseOrderLinesTest {

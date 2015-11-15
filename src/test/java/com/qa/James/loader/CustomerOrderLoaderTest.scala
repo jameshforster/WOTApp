@@ -34,16 +34,26 @@ class CustomerOrderLoaderTest extends FlatSpec{
   
   createQueryCustomerOrdersByStatusTest
   def createQueryCustomerOrdersByStatusTest{
-    "SQL Query (Status" should "produce a matching query" in {
+    "SQL Query (Status)" should "produce a matching query" in {
        val cOLoader = new CustomerOrderLoader[String]
        assert(cOLoader.createQueryCustomerOrdersByStatus("Picked").equals("SELECT customerorder.*, customerorderstatus.*, employee.*, customer.*, employeeUser.*, customerUser.*, role.* FROM customerorder LEFT JOIN customerorderstatus ON customerorder.idCustomerOrderStatus = customerorderstatus.idCustomerOrderStatus LEFT JOIN employee ON customerorder.idEmployee = employee.idEmployee LEFT JOIN customer ON customerorder.idCustomer = customer.idUser LEFT JOIN user AS employeeUser ON employee.idEmployee = employeeUser.idUser LEFT JOIN user AS customerUser ON customer.idUser = customerUser.idUser LEFT JOIN role ON role.idRole = employee.role_idRole WHERE customerorderstatus.status LIKE '%Picked%'"))
     }
   }
   
+  //This test fails after first run due to changed in the database in later test, reset the database value if needs to be run again
+  updateCustomerOrdersByStatusTest
+  def updateCustomerOrdersByStatusTest {
+    "SQL Update" should "equal the update string" in {
+      val cOLoader = new CustomerOrderLoader[Int]
+      val cO = cOLoader.queryCustomerOrders(cOLoader.createQueryCustomerOrdersByID, 1).head
+      assert(cOLoader.updateCustomerOrderByStatus(cO).equals("UPDATE customerorder SET idCustomerOrderStatus = 2, idEmployee = 1 WHERE idCustomerOrder = 1"))
+    }
+  }
+  
   //Note this test can break if run repeatedly as it updates the customer order status beyond recognised values, case handled in relevant logic class
-  updateCustomerOrderByStatusTest
-  def updateCustomerOrderByStatusTest{
-    "The databse CustomerOrderStatus" should "be updated to match the input one" in {
+  updateCustomerOrdersTest
+  def updateCustomerOrdersTest{
+    "The database CustomerOrder" should "be updated to match the input one" in {
       val cOLoader = new CustomerOrderLoader[Int]
       val cOSLoader = new CustomerOrderStatusLoader[Int]
       val cO = cOLoader.queryCustomerOrders(cOLoader.createQueryCustomerOrdersByID, 1).head
