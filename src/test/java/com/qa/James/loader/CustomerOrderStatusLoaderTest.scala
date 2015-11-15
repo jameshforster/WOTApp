@@ -20,9 +20,9 @@ class CustomerOrderStatusLoaderTest extends FlatSpec{
       assert(cOSLoader.createCustomerOrderStatusEntities(JDBCConnector.executeSQL(JDBCConnector.querySQL, cOSLoader.createQueryCustomerOrderStatusByID(1)), null).length == 1)
     }
     
-    "Array" should "produce an empty resultset with an invalid ID" in {
+    "Array" should "produce a null resultset with an invalid ID" in {
       val cOSLoader = new CustomerOrderStatusLoader[Int]
-      assert(cOSLoader.createCustomerOrderStatusEntities(JDBCConnector.executeSQL(JDBCConnector.querySQL, cOSLoader.createQueryCustomerOrderStatusByID(100)), null).isEmpty)
+      assert(cOSLoader.createCustomerOrderStatusEntities(JDBCConnector.executeSQL(JDBCConnector.querySQL, cOSLoader.createQueryCustomerOrderStatusByID(100)), null) == null)
     }
     
     "Array" should "contain a CustomerOrderStatus"in {
@@ -36,12 +36,12 @@ class CustomerOrderStatusLoaderTest extends FlatSpec{
     }
   }
   
+  queryCustomerOrderStatusTest
   def queryCustomerOrderStatusTest {
     
-    "Final Array" should "be equal to entity creation array"
-    val cOSLoader = new CustomerOrderStatusLoader[Int]
-    assert(cOSLoader.queryCustomerOrderStatus(cOSLoader.createQueryCustomerOrderStatusByID, 1).equals(cOSLoader.createCustomerOrderStatusEntities(JDBCConnector.executeSQL(JDBCConnector.querySQL, cOSLoader.createQueryCustomerOrderStatusByID(1)), null).length == 1))
-  }
-  
-  
+    "Final Array" should "be equal to entity creation array" in {
+      val cOSLoader = new CustomerOrderStatusLoader[Int]
+      assert(cOSLoader.queryCustomerOrderStatus(cOSLoader.createQueryCustomerOrderStatusByID, 1).head.isInstanceOf[CustomerOrderStatus])
+    }
+  }  
 }

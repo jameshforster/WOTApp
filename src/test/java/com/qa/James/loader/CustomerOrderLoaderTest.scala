@@ -40,7 +40,19 @@ class CustomerOrderLoaderTest extends FlatSpec{
     }
   }
   
-  //TODO test to produce an update query from a customer order
+  //Note this test can break if run repeatedly as it updates the customer order status beyond recognised values, case handled in relevant logic class
+  updateCustomerOrderByStatusTest
+  def updateCustomerOrderByStatusTest{
+    "The databse CustomerOrderStatus" should "be updated to match the input one" in {
+      val cOLoader = new CustomerOrderLoader[Int]
+      val cOSLoader = new CustomerOrderStatusLoader[Int]
+      val cO = cOLoader.queryCustomerOrders(cOLoader.createQueryCustomerOrdersByID, 1).head
+      val cOS = cOSLoader.queryCustomerOrderStatus(cOSLoader.createQueryCustomerOrderStatusByID, cO.customerOrderStatus.idCustomerOrderStatus + 1).head
+      cO.customerOrderStatus = cOS
+      cOLoader.updateCustomerOrders(cOLoader.updateCustomerOrderByStatus, cO)
+      assert(cO.customerOrderStatus.idCustomerOrderStatus == cOLoader.queryCustomerOrders(cOLoader.createQueryCustomerOrdersByID, 1).head.customerOrderStatus.idCustomerOrderStatus)
+    }
+  }
   
   createCustomerOrderEntitiesTest
   def createCustomerOrderEntitiesTest {

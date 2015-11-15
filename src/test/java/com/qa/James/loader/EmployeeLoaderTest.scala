@@ -21,6 +21,7 @@ class EmployeeLoaderTest extends FlatSpec {
     }
   }
   
+  createEmployeeEntitiesTest
   def createEmployeeEntitiesTest {
     "Array" should "produce one result with a valid ID" in {
       val eLoader = new EmployeeLoader[Int]
@@ -32,9 +33,9 @@ class EmployeeLoaderTest extends FlatSpec {
       assert(!eLoader.createEmployeeEntities(JDBCConnector.executeSQL(JDBCConnector.querySQL, eLoader.createQueryEmployeeByEmail("@NBgardens")), null).isEmpty)
     }
     
-    "Array" should "not be empty with an invalid search term" in {
+    "Array" should "be null with an invalid search term" in {
       val eLoader = new EmployeeLoader[Int]
-      assert(!eLoader.createEmployeeEntities(JDBCConnector.executeSQL(JDBCConnector.querySQL, eLoader.createQueryEmployeeByID(100)), null).isEmpty)
+      assert(eLoader.createEmployeeEntities(JDBCConnector.executeSQL(JDBCConnector.querySQL, eLoader.createQueryEmployeeByID(100)), null) == null)
     }
     
     "Array" should "contain Employees" in {
@@ -45,6 +46,14 @@ class EmployeeLoaderTest extends FlatSpec {
     "Array" should "contain non-null Employees" in {
       val eLoader = new EmployeeLoader[Int]
       assert(eLoader.createEmployeeEntities(JDBCConnector.executeSQL(JDBCConnector.querySQL, eLoader.createQueryEmployeeByID(1)), null).head != null)
+    }
+  }
+  
+  queryEmployeeTest
+  def queryEmployeeTest {
+    "Final Array" should "Be equal to previous array" in {
+      val eLoader = new EmployeeLoader[Int]
+      assert(eLoader.queryEmployee(eLoader.createQueryEmployeeByID, 1).head.isInstanceOf[Employee])
     }
   }
 }

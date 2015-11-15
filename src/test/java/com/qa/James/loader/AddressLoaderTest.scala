@@ -22,7 +22,7 @@ class AddressLoaderTest extends FlatSpec{
     
     "Address List" should "be null on an invalid ID search" in {
       val aLoader = new AddressLoader[Int]
-      assert(aLoader.queryAddress("AddressID", 5) == null)
+      assert(aLoader.queryAddress("AddressID", 100) == null)
     }
     
     "Address List" should "be null on an invalid search term" in {
