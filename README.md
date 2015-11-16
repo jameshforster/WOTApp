@@ -7,11 +7,11 @@ If you experience a Maven build error the auto dependency download has failed th
 
 You will require the https://github.com/DaveWoodie/SpringWater project downloaded in order for Maven to build.
 
-<dependency>
+"<dependency>
 	<groupId>com.netbuilder</groupId>
 	<artifactId>springwater-ops-website</artifactId>
 	<version>0.1.0</version>
-</dependency>
+</dependency>"
 
 This project is dependant on the SpringWater-Ops-Website child project in SpringWater for java entities to use the JMS.
 
