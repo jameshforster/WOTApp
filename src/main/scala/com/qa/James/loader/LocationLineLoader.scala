@@ -4,6 +4,9 @@ import com.qa.James.entities.LocationLine
 import java.sql.ResultSet
 
 class LocationLineLoader [T]{
+  val sqlSelect = "SELECT *"
+  val sqlFrom = " FROM locationline"
+  val sqlUpdate = "UPDATE locationline" 
   
   def queryLocationLines(f: T => String, t:T): Array[LocationLine] = {
     //TODO write general query construction and execution
@@ -20,17 +23,15 @@ class LocationLineLoader [T]{
   }
   
   def createQueryLocationLineByID(id:T):String = {
-    //TODO create SQL query string for finding location lines from location ID
-    null
+    sqlSelect + sqlFrom + " WHERE idLocation = '" + id + "'"
   }
   
   def createQueryLocationLineByItemID(id:T):String = {
-    //TODO create SQL query string for finding location lines from item ID
-    null
+    sqlSelect + sqlFrom + " WHERE idItem = " + id
   }
   
   def createUpdateLocationLine(lL:LocationLine):String = {
-    //TODO create SQL update string for updating location lines
+    sqlUpdate + " SET quantity = " + lL.quantity + " WHERE idLocation = '" + lL.locationID + "'"
     null
   }
 }
