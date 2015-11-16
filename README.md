@@ -9,4 +9,4 @@ You will require the https://github.com/DaveWoodie/SpringWater project downloade
 
 This project is dependant on the SpringWater-Ops-Website child project in SpringWater for java entities to use the JMS.
 
-This project will not run without the correct MongoDB and MySQL databases. In the future they will be auto-generated if not found by the project.
+This project will not run without the correct MongoDB and MySQL databases. A test database can be constructed from importing the contents of the "Database Files" folder into their respective server types. The database name for the mySQL database is "mydb" and for the mongoDB it is "nbgardens" In the future they will be auto-generated if not found by the project.
