@@ -1,16 +1,16 @@
 package com.qa.wota.loader
 
-import com.qa.James.entities.CustomerOrder
+import com.qa.wota.entities.CustomerOrder
 
 import java.sql.ResultSet
 
-import com.qa.James.entities.Role
-import com.qa.James.entities.User
-import com.qa.James.entities.Customer
-import com.qa.James.entities.Employee
-import com.qa.James.entities.CustomerOrderStatus
-import com.qa.James.entities.CustomerOrderLine
-import com.qa.James.entities.Address
+import com.qa.wota.entities.Role
+import com.qa.wota.entities.User
+import com.qa.wota.entities.Customer
+import com.qa.wota.entities.Employee
+import com.qa.wota.entities.CustomerOrderStatus
+import com.qa.wota.entities.CustomerOrderLine
+import com.qa.wota.entities.Address
 import com.qa.wota.loader.JDBCConnector;
 
 /**

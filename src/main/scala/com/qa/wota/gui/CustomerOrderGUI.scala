@@ -2,8 +2,8 @@ package com.qa.wota.gui
 
 import scalafx.Includes._
 import scalafx.scene.layout.BorderPane
-import com.qa.James.entities.CustomerOrder
-import com.qa.James.DummyData
+import com.qa.wota.entities.CustomerOrder
+import com.qa.wota.DummyData
 import scalafx.collections.ObservableBuffer
 import scalafx.scene.control.TableColumn._
 import scalafx.scene.control.{TableCell, TableColumn, TableView}
@@ -13,7 +13,7 @@ import scalafx.scene.layout.GridPane
 import scalafx.scene.control.ComboBox
 import scalafx.scene.control.Button
 import scalafx.geometry.Insets
-import com.qa.James.loader.CustomerOrderLoader
+import com.qa.wota.loader.CustomerOrderLoader
 import scalafx.scene.control.Alert
 import scalafx.scene.control.Alert.AlertType
 

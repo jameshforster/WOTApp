@@ -1,7 +1,7 @@
 package com.qa.wota.loader
 
 import org.scalatest.FlatSpec
-import com.qa.James.entities.Location
+import com.qa.wota.entities.Location
 
 /**
  * @author jforster

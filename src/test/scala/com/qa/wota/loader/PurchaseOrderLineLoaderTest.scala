@@ -2,7 +2,7 @@ package com.qa.wota.loader
 
 import org.scalatest.FlatSpec
 
-import com.qa.James.entities.PurchaseOrderLine
+import com.qa.wota.entities.PurchaseOrderLine
 import com.qa.wota.loader.JDBCConnector;
 
 /**

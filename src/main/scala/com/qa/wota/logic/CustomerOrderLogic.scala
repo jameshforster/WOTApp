@@ -1,12 +1,12 @@
 package com.qa.wota.logic
 
-import com.qa.James.GUI.MainGUI
-import com.qa.James.entities.CustomerOrder
-import com.qa.James.loader.CustomerOrderLoader
-import com.qa.James.loader.CustomerOrderStatusLoader
+import com.qa.wota.gui.MainGUI
+import com.qa.wota.entities.CustomerOrder
+import com.qa.wota.loader.CustomerOrderLoader
+import com.qa.wota.loader.CustomerOrderStatusLoader
 import scalafx.scene.control.Alert
 import scalafx.scene.control.Alert.AlertType
-import com.qa.James.GUI.CustomerOrderGUI
+import com.qa.wota.gui.CustomerOrderGUI
 
 /**
  * @author jforster

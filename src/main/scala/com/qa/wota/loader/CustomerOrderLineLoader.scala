@@ -1,8 +1,8 @@
 package com.qa.wota.loader
 
-import com.qa.James.entities.CustomerOrderLine
+import com.qa.wota.entities.CustomerOrderLine
 import java.sql.ResultSet
-import com.qa.James.entities.Item
+import com.qa.wota.entities.Item
 
 /**
  * @author jforster

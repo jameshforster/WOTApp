@@ -1,9 +1,9 @@
 package com.qa.wota.loader
 
-import com.qa.James.entities.Employee
+import com.qa.wota.entities.Employee
 import java.sql.ResultSet
-import com.qa.James.entities.User
-import com.qa.James.entities.Role
+import com.qa.wota.entities.User
+import com.qa.wota.entities.Role
 
 /**
  * @author jforster

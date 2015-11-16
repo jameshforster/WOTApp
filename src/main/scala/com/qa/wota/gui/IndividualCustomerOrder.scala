@@ -1,7 +1,7 @@
 package com.qa.wota.gui
 
 import scalafx.application.JFXApp
-import com.qa.James.loader.CustomerOrderLoader
+import com.qa.wota.loader.CustomerOrderLoader
 import scalafx.application.JFXApp.PrimaryStage
 import scalafx.scene.Scene
 import scalafx.scene.layout.BorderPane
@@ -9,17 +9,17 @@ import scalafx.scene.layout.GridPane
 import scalafx.scene.layout.VBox
 import scalafx.scene.control.Label
 import java.text.SimpleDateFormat
-import com.qa.James.entities.CustomerOrderLine
+import com.qa.wota.entities.CustomerOrderLine
 import scalafx.collections.ObservableBuffer
 import scalafx.scene.control.TableView
 import scalafx.scene.control.TableColumn
 import scalafx.scene.control.TableColumn._
 import scalafx.Includes._
 import scalafx.scene.control.Button
-import com.qa.James.logic.CustomerOrderLogic
+import com.qa.wota.logic.CustomerOrderLogic
 import scalafx.geometry.Insets
 import scalafx.stage.Stage
-import com.qa.James.entities.CustomerOrder
+import com.qa.wota.entities.CustomerOrder
 
 /**
  * @author jforster

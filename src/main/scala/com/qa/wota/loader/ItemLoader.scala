@@ -1,6 +1,6 @@
 package com.qa.wota.loader
 
-import com.qa.James.entities.Item
+import com.qa.wota.entities.Item
 
 /**
  * @author jforster

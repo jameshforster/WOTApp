@@ -1,7 +1,7 @@
 package com.qa.wota.loader
 
 import java.sql.ResultSet
-import com.qa.James.entities.PurchaseOrderLine
+import com.qa.wota.entities.PurchaseOrderLine
 
 /**
  * @author jforster

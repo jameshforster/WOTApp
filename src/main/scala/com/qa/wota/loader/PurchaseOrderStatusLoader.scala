@@ -1,6 +1,6 @@
 package com.qa.wota.loader
 
-import com.qa.James.entities.PurchaseOrderStatus
+import com.qa.wota.entities.PurchaseOrderStatus
 import java.sql.ResultSet
 
 /**

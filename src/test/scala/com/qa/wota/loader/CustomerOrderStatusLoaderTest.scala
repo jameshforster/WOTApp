@@ -2,7 +2,7 @@ package com.qa.wota.loader
 
 import org.scalatest.FlatSpec
 
-import com.qa.James.entities.CustomerOrderStatus
+import com.qa.wota.entities.CustomerOrderStatus
 import com.qa.wota.loader.JDBCConnector;
 
 class CustomerOrderStatusLoaderTest extends FlatSpec{

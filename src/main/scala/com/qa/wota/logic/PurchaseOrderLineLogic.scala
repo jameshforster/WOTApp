@@ -1,7 +1,7 @@
 package com.qa.wota.logic
 
-import com.qa.James.entities.PurchaseOrderLine
-import com.qa.James.loader.PurchaseOrderLineLoader
+import com.qa.wota.entities.PurchaseOrderLine
+import com.qa.wota.loader.PurchaseOrderLineLoader
 import scalafx.scene.control.Alert
 import scalafx.scene.control.Alert.AlertType
 

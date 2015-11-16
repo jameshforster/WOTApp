@@ -2,8 +2,7 @@ package com.qa.wota.loader
 
 import org.scalatest.FlatSpec
 
-import com.qa.James.entities.CustomerOrder
-import com.qa.wota.loader.JDBCConnector;
+import com.qa.wota.entities.CustomerOrder
 
 /**
  * @author jforster

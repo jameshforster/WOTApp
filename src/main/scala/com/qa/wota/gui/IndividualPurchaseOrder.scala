@@ -2,9 +2,9 @@ package com.qa.wota.gui
 
 import scalafx.application.JFXApp
 import java.text.SimpleDateFormat
-import com.qa.James.loader.PurchaseOrderLoader
+import com.qa.wota.loader.PurchaseOrderLoader
 import scalafx.collections.ObservableBuffer
-import com.qa.James.entities.PurchaseOrderLine
+import com.qa.wota.entities.PurchaseOrderLine
 import scalafx.scene.control.TableColumn._
 import scalafx.scene.control.TableColumn
 import scalafx.scene.control.TableView
@@ -15,7 +15,7 @@ import scalafx.scene.layout.BorderPane
 import scalafx.scene.control.Button
 import scalafx.scene.control.Label
 import scalafx.Includes._
-import com.qa.James.logic.PurchaseOrderLogic
+import com.qa.wota.logic.PurchaseOrderLogic
 import scalafx.scene.paint.LinearGradient
 import scalafx.scene.paint.Stops
 import scalafx.scene.paint.Color._
@@ -25,9 +25,9 @@ import scalafx.scene.layout.VBox
 import scalafx.scene.control.Alert
 import scalafx.scene.control.Dialog
 import scalafx.scene.control.Alert.AlertType
-import com.qa.James.logic.PurchaseOrderLineLogic
+import com.qa.wota.logic.PurchaseOrderLineLogic
 import scalafx.scene.control.TextInputDialog
-import com.qa.James.entities.PurchaseOrder
+import com.qa.wota.entities.PurchaseOrder
 
 
 /**

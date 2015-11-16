@@ -1,13 +1,13 @@
 package com.qa.wota.logic
 
-import com.qa.James.entities.PurchaseOrder
-import com.qa.James.loader.PurchaseOrderLoader
-import com.qa.James.loader.PurchaseOrderStatusLoader
-import com.qa.James.GUI.MainGUI
-import com.qa.James.JMS.Sender
+import com.qa.wota.entities.PurchaseOrder
+import com.qa.wota.loader.PurchaseOrderLoader
+import com.qa.wota.loader.PurchaseOrderStatusLoader
+import com.qa.wota.gui.MainGUI
+import com.qa.wota.jms.Sender
 import scalafx.scene.control.Alert
 import scalafx.scene.control.Alert.AlertType
-import com.qa.James.GUI.PurchaseOrderGUI
+import com.qa.wota.gui.PurchaseOrderGUI
 
 
 /**

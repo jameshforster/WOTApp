@@ -1,6 +1,6 @@
 package com.qa.wota
 
-import com.qa.James.loader.JDBCConnectorTest
+import com.qa.wota.loader.JDBCConnectorTest
 import org.scalatest.FlatSpec
 import org.scalatest.Suite
 

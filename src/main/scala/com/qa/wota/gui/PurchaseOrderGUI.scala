@@ -1,7 +1,7 @@
 package com.qa.wota.gui
 
-import com.qa.James.loader.PurchaseOrderLoader
-import com.qa.James.entities.PurchaseOrder
+import com.qa.wota.loader.PurchaseOrderLoader
+import com.qa.wota.entities.PurchaseOrder
 import scalafx.collections.ObservableBuffer
 import scalafx.scene.control.TableView
 import scalafx.scene.control.TableColumn

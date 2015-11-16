@@ -11,7 +11,7 @@ import scalafx.scene.control.Label
 import scalafx.scene.layout.GridPane
 import scalafx.scene.control.Button
 import scalafx.geometry.Insets
-import com.qa.James.entities.Employee
+import com.qa.wota.entities.Employee
 import scalafx.scene.control.Alert
 import scalafx.scene.control.Alert.AlertType
 

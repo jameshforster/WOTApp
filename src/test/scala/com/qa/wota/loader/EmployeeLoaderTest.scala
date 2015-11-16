@@ -2,7 +2,7 @@ package com.qa.wota.loader
 
 import org.scalatest.FlatSpec
 
-import com.qa.James.entities.Employee
+import com.qa.wota.entities.Employee
 import com.qa.wota.loader.JDBCConnector;
 
 class EmployeeLoaderTest extends FlatSpec {
