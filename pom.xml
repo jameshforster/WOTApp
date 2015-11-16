@@ -1,76 +1,76 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.qa</groupId>
-  <artifactId>James</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <packaging>jar</packaging>
+	<groupId>com.qa</groupId>
+	<artifactId>wota</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
 
-  <name>James</name>
-  <url>http://maven.apache.org</url>
+	<name>James</name>
+	<url>http://maven.apache.org</url>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
 
-  <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
-    </dependency>
-	<dependency>
-		<groupId>org.scalafx</groupId>
-		<artifactId>scalafx_2.11</artifactId>
-		<version>8.0.60-R9</version>
-	</dependency>
-	<dependency>
-		<groupId>mysql</groupId>
-		<artifactId>mysql-connector-java</artifactId>
-		<version>5.1.37</version>
-	</dependency>
-	<dependency>
-		<groupId>org.mongodb</groupId>
-		<artifactId>casbah-gridfs_2.11</artifactId>
-		<version>3.0.0</version>
-		</dependency>
-		
+	<dependencies>
 		<dependency>
-		<groupId>org.mongodb</groupId>
-		<artifactId>mongo-java-driver</artifactId>
-		<version>3.1.0</version>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.1</version>
+			<scope>test</scope>
 		</dependency>
-		
 		<dependency>
-		<groupId>org.mongodb</groupId>
-		<artifactId>mongo-java-driver</artifactId>
-		<version>3.1.0</version>
+			<groupId>org.scalafx</groupId>
+			<artifactId>scalafx_2.11</artifactId>
+			<version>8.0.60-R9</version>
 		</dependency>
-		
 		<dependency>
-		<groupId>org.mongodb</groupId>
-		<artifactId>casbah-commons_2.11</artifactId>
-		<version>3.0.0</version>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.37</version>
 		</dependency>
-		
 		<dependency>
-		<groupId>org.mongodb</groupId>
-		<artifactId>casbah-core_2.11</artifactId>
-		<version>3.0.0</version>
+			<groupId>org.mongodb</groupId>
+			<artifactId>casbah-gridfs_2.11</artifactId>
+			<version>3.0.0</version>
 		</dependency>
-		
+
 		<dependency>
-		<groupId>org.mongodb</groupId>
-		<artifactId>casbah-query_2.11</artifactId>
-		<version>3.0.0</version>
+			<groupId>org.mongodb</groupId>
+			<artifactId>mongo-java-driver</artifactId>
+			<version>3.1.0</version>
 		</dependency>
-		
+
 		<dependency>
-		<groupId>org.mongodb</groupId>
-		<artifactId>casbah-gridfs_2.11</artifactId>
-		<version>3.0.0</version>
+			<groupId>org.mongodb</groupId>
+			<artifactId>mongo-java-driver</artifactId>
+			<version>3.1.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mongodb</groupId>
+			<artifactId>casbah-commons_2.11</artifactId>
+			<version>3.0.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mongodb</groupId>
+			<artifactId>casbah-core_2.11</artifactId>
+			<version>3.0.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mongodb</groupId>
+			<artifactId>casbah-query_2.11</artifactId>
+			<version>3.0.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mongodb</groupId>
+			<artifactId>casbah-gridfs_2.11</artifactId>
+			<version>3.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>com.netbuilder</groupId>
@@ -83,51 +83,51 @@
 			<version>5.4.2</version>
 		</dependency>
 		<dependency>
-		  <groupId>org.scalatest</groupId>
-		  <artifactId>scalatest_2.11</artifactId>
-		  <version>2.2.4</version>
-		  <scope>test</scope>
+			<groupId>org.scalatest</groupId>
+			<artifactId>scalatest_2.11</artifactId>
+			<version>2.2.4</version>
+			<scope>test</scope>
 		</dependency>
-  </dependencies>
-  
-  <build>
-  	<plugins>
-  		<plugin>
-		        <groupId>org.apache.activemq.tooling</groupId>
-		        <artifactId>maven-activemq-plugin</artifactId>
-		        <version>5.7.0</version>
-		        <configuration>
-		          <configUri>xbean:file:../conf/activemq.xml</configUri>
-		          <fork>false</fork>
-		          <systemProperties>
-		            <property>
-		              <name>javax.net.ssl.keyStorePassword</name>
-		              <value>password</value>
-		            </property>
-		            <property>
-		              <name>org.apache.activemq.default.directory.prefix</name>
-		              <value>./target/</value>
-		            </property>
-		          </systemProperties>
-		        </configuration>
-		        <dependencies>
-		      <dependency>
-		            <groupId>org.springframework</groupId>
-		        <artifactId>spring</artifactId>
-		        <version>2.5.5</version>
-		      </dependency>
-		      <dependency>
-		            <groupId>org.mortbay.jetty</groupId>
-		            <artifactId>jetty-xbean</artifactId>
-		            <version>6.1.11</version>
-		         </dependency>    
-		         <dependency>
-		           <groupId>org.apache.camel</groupId>
-		           <artifactId>camel-activemq</artifactId>
-		           <version>1.1.0</version>
-		         </dependency>
-		    </dependencies>           
-	      </plugin>
-  	</plugins>
-  </build>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.activemq.tooling</groupId>
+				<artifactId>maven-activemq-plugin</artifactId>
+				<version>5.7.0</version>
+				<configuration>
+					<configUri>xbean:file:../conf/activemq.xml</configUri>
+					<fork>false</fork>
+					<systemProperties>
+						<property>
+							<name>javax.net.ssl.keyStorePassword</name>
+							<value>password</value>
+						</property>
+						<property>
+							<name>org.apache.activemq.default.directory.prefix</name>
+							<value>./target/</value>
+						</property>
+					</systemProperties>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.springframework</groupId>
+						<artifactId>spring</artifactId>
+						<version>2.5.5</version>
+					</dependency>
+					<dependency>
+						<groupId>org.mortbay.jetty</groupId>
+						<artifactId>jetty-xbean</artifactId>
+						<version>6.1.11</version>
+					</dependency>
+					<dependency>
+						<groupId>org.apache.camel</groupId>
+						<artifactId>camel-activemq</artifactId>
+						<version>1.1.0</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+		</plugins>
+	</build>
 </project>
