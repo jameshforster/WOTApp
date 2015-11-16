@@ -5,12 +5,12 @@ import java.sql.ResultSet
 
 class LocationLineLoader [T]{
   
-  def queryLocationLines(f: T => String): Array[LocationLine] = {
+  def queryLocationLines(f: T => String, t:T): Array[LocationLine] = {
     //TODO write general query construction and execution
     null
   }
   
-  def updateLocationLine(f: LocationLine => String) {
+  def updateLocationLine(f: LocationLine => String, lL:LocationLine) {
     //TODO write general update construction and execution
   }
   
@@ -24,7 +24,7 @@ class LocationLineLoader [T]{
     null
   }
   
-  def createQueryLocationLineByItemID(lL:T):String = {
+  def createQueryLocationLineByItemID(id:T):String = {
     //TODO create SQL query string for finding location lines from item ID
     null
   }
