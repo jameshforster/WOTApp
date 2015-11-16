@@ -54,17 +54,15 @@ class LocationLoader [T]{
   * return: String containing the sql command to query
   */
   def createQueryLocationByAll(t:T): String = {
-    //TODO write sql query creation code for all locations
-    null
+    sqlSelect + sqlFrom
   }
   
   /**
   * Method to create the SQL command to query Locations with the input ItemID
   * return: String containing the sql command to query
   */
-  def createQueryLocationByItemID(t:T): String = {
-    //TODO write sql query creation code for locations by Item
-    null
+  def createQueryLocationByItemID(id:T): String = {
+    sqlSelect + sqlFrom + " WHERE location.idItem =" + id
   }
   
   /**
@@ -72,7 +70,6 @@ class LocationLoader [T]{
    * return: String containing the sql command to update
    */
   def createUpdateLocation(l:Location): String = {
-    sqlUpdate + 
-    null
+    sqlUpdate + " SET location.stored = " + l.stored + " WHERE location.idLocation = '" + l.locationID + "'"
   }
 }
