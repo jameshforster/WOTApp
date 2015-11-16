@@ -10,6 +10,7 @@ import java.sql.ResultSet
 class LocationLoader [T]{
   val sqlSelect = "SELECT location.*"
   val sqlFrom = " FROM location"
+  val sqlUpdate = "UPDATE location"
   
   /**
    * Method to query Locations based on input function
@@ -71,7 +72,7 @@ class LocationLoader [T]{
    * return: String containing the sql command to update
    */
   def createUpdateLocation(l:Location): String = {
-    //TODO write sql update creation code for the input Location
+    sqlUpdate + 
     null
   }
 }
