@@ -26,7 +26,7 @@
 		<dependency>
 		    <groupId>com.github.DaveWoodie</groupId>
 		    <artifactId>SpringWater</artifactId>
-		    <version>v0.0.1</version>
+		    <version>v0.0.2</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
